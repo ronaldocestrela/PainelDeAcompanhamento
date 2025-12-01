@@ -1,0 +1,98 @@
+{
+  "Id": "aec22c98-5e04-4156-9af7-a4ef6c0a8f2e",
+  "IsTest": true,
+  "Event": "Purchase_Order_Confirmed",
+  "CreatedAt": "2024-08-19T13:14:02",
+  "Data": {
+    "Products": [
+      {
+        "Id": "ed4bf7d8-5928-4bd8-b87c-c752c74f9fc2",
+        "Name": "TheBossPagamentoUnico"
+      }
+    ],
+    "Buyer": {
+      "Id": "369cc2de-9426-44ae-b652-f78d62118c0b",
+      "Email": "test.email@mail.com",
+      "Name": "Moises Pereira",
+      "PhoneNumber": "+5500999999999",
+      "Document": "999.999.999-99",
+      "Address": {
+        "ZipCode": "15056-131",
+        "Street": "Rua Mariana Pereira Butinhon",
+        "StreetNumber": "1",
+        "Complement": "Complemento",
+        "District": "Village Damha Rio Preto III",
+        "City": "São Paulo",
+        "State": "São Paulo"
+      }
+    },
+    "Seller": {
+      "Id": "e410241c-06f9-43f8-819d-8aa65f311ec8",
+      "Email": "membro@lastlink.com"
+    },
+    "Commissions": [
+      {
+        "Value": 0.99,
+        "Source": "MARKETPLACE"
+      },
+      {
+        "Value": 15.25,
+        "Source": "PRODUCER"
+      },
+      {
+        "Value": 10.5,
+        "Source": "COPRODUCER"
+      },
+      {
+        "Value": 5.25,
+        "Source": "AFFILIATE"
+      }
+    ],
+    "Purchase": {
+      "PaymentId": "0ec89590-d6e9-4933-a54c-fe61ac1db8f1",
+      "Recurrency": 1,
+      "PaymentDate": "2024-08-19T13:14:02.9100593Z",
+      "OriginalPrice": {
+        "Value": 12.5
+      },
+      "Price": {
+        "Value": 12.5
+      },
+      "Payment": {
+        "NumberOfInstallments": 1,
+        "PaymentMethod": "bankslip"
+      },
+      "Affiliate": {
+        "Id": "b2236ca8-327a-4979-92a2-e41265b2764f",
+        "Email": "test.affiliate@mail.com"
+      },
+      "BankSlip": {
+        "DigitableLine": "34191.09008 63571.277447 91020.150008 5 12340000000000",
+        "BarCodeData": "341911902000635712774479102015000812340000000000",
+        "BarCode": "https://barcode.com.br/barcode"
+      }
+    },
+    "Subscriptions": [
+      {
+        "Id": "aba91ea1-d082-4e59-afc9-7cadbf9aad3a",
+        "ProductId": "ed4bf7d8-5928-4bd8-b87c-c752c74f9fc2"
+      }
+    ],
+    "Offer": {
+      "Id": "08da2c73-7b51-4e47-8e1c-3a079926ecd4",
+      "Name": "TheBossPagamentoUnico",
+      "Url": "https://lastlink.com/p/CE49A5331"
+    },
+    "Utm": {
+      "UtmSource": "utm_source",
+      "UtmMedium": "utm_medium",
+      "UtmCampaign": "utm_campaign",
+      "UtmTerm": "utm_term",
+      "UtmContent": "utm_content"
+    },
+    "DeviceInfo": {
+      "UserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+      "ip": "3.212.6.212"
+    }
+  }
+}

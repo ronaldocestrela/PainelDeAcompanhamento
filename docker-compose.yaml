@@ -1,0 +1,12 @@
+services:
+  vite:
+    container_name: bet-board-webclient
+    build: .
+    restart: always
+    ports:
+      - "3000:3000" # Mapeia a porta do host para o contêiner
+    volumes:
+      - .:/app # Sincroniza os arquivos do projeto
+      - /app/node_modules # Evita sobrescrever os node_modules do contêiner
+    stdin_open: true
+    tty: true

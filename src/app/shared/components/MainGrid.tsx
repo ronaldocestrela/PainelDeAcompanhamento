@@ -23,16 +23,8 @@ export default function MainGrid() {
     cardData: StatCardProps[];
     gridRows: GridRowsProp;
   }>(() => {
-    const ASTOFO_ID = "e4f0cab3-7abe-423b-ae56-ab3017b06ee8";
-    const FUNNYO_ID = "ab44e883-d315-435b-bc9b-3711b4ff115e";
 
     let selectedRows: GridRowsProp = [];
-
-    if (selectedExpertId === ASTOFO_ID) {
-      selectedRows = allGridRows.slice(0, 8);
-    } else if (selectedExpertId === FUNNYO_ID) {
-      selectedRows = allGridRows.slice(8, 15);
-    }
 
     if (selectedRows.length === 0) {
       const emptyState: Omit<StatCardProps, "title"> = {
@@ -43,9 +35,9 @@ export default function MainGrid() {
       };
       return {
         cardData: [
-          { ...emptyState, title: "Users" },
-          { ...emptyState, title: "Conversions" },
-          { ...emptyState, title: "Event count" },
+          { ...emptyState, title: "Comissão" },
+          { ...emptyState, title: "CPA" },
+          { ...emptyState, title: "Reavenue" },
         ],
         gridRows: [],
       };
@@ -57,15 +49,15 @@ export default function MainGrid() {
 
     const dynamicCardData: StatCardProps[] = [
       {
-        title: "Users", value: totalUsers.toLocaleString(), interval: "Dados do expert", trend: "up",
+        title: "Comissão", value: totalUsers.toLocaleString(), interval: "Dados do expert", trend: "up",
         data: selectedRows.map((r) => r.users).filter(Boolean),
       },
       {
-        title: "Conversions", value: totalConversions.toLocaleString(), interval: "Dados do expert", trend: "down",
+        title: "CPA", value: totalConversions.toLocaleString(), interval: "Dados do expert", trend: "down",
         data: selectedRows.map((r) => r.conversions[0]).filter(Boolean),
       },
       {
-        title: "Event count", value: totalEvents.toLocaleString(), interval: "Dados do expert", trend: "neutral",
+        title: "Reavenue", value: totalEvents.toLocaleString(), interval: "Dados do expert", trend: "neutral",
         data: selectedRows.map((r) => r.eventCount).filter(Boolean),
       },
     ];
@@ -85,11 +77,11 @@ export default function MainGrid() {
           <Typography component="h2" variant="h6">
             Overview
           </Typography>
-          {selectedExpertId && (
+          {/* {selectedExpertId && (
             <Typography variant="caption" color="text.secondary">
               {selectedExpertId}
             </Typography>
-          )}
+          )} */}
         </Stack>
         <Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

@@ -210,6 +210,31 @@ type ListSeller = {
   imageUrl: string;
 };
 
+// Companies
+type Company = {
+  id: string;
+  expertsCount: number;
+  name: string;
+  host: string;
+  linkLogoHeader: string;
+  linkLogoMenuLateral: string;
+  linkFavicon: string;
+  linkLogoLogin: string;
+  tituloPagina: string;
+};
+
+// Create User Payload
+type CreateUserPayload = {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  isActive: boolean;
+  isSaler: boolean;
+  isAnalyst: boolean;
+  RoleUser: string;
+};
+
 // Marketing Actions
 export type MarketingAction = {
   id: string;
@@ -293,6 +318,12 @@ export type {
 
   //Seller
   ListSeller,
+
+  // Companies
+  Company,
+
+  // Create User
+  CreateUserPayload,
 };
 
 export type Deal = {

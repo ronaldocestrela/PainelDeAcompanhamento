@@ -4,17 +4,18 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import TextInput from "../../app/shared/components/TextInput";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import { createUserSchema, type CreateUserSchema } from "../../lib/schemas/createUserSchema";
+import { useUser } from "../../lib/hooks/useUser";
+import type { CreateUserPayload } from "../../lib/types";
 
 interface CreateUserModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate: (userData: any) => Promise<void>;
-  isSubmitting: boolean;
   roles: { id: string; name: string }[];
   isLoadingRoles: boolean;
 }
@@ -35,24 +36,51 @@ const modalStyle = {
 export default function CreateUserModal({
   open,
   onClose,
-  onCreate,
-  isSubmitting,
   roles,
   isLoadingRoles,
 }: CreateUserModalProps) {
-  const { control, handleSubmit, reset } = useForm<any>({
+  const { createUser } = useUser();
+  const { control, handleSubmit, reset } = useForm<CreateUserSchema>({
     mode: "onTouched",
+    resolver: zodResolver(createUserSchema),
+    defaultValues: {
+      name: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "",
+    },
   });
 
   useEffect(() => {
     if (!open) {
-      reset();
+      reset({
+        name: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "",
+      });
     }
   }, [open, reset]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: CreateUserSchema) => {
     try {
-      await onCreate(data);
+      const selectedRole = roles.find((role) => role.id === data.role);
+      const payload: CreateUserPayload = {
+        name: data.name,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+        isActive: true,
+        isSaler: selectedRole?.name === "Saler",
+        isAnalyst: selectedRole?.name === "Analyst",
+        RoleUser: data.role,
+      };
+      await createUser.mutateAsync(payload);
+      onClose();
     } catch (error) {
       alert("Erro ao criar usuário");
     }
@@ -105,19 +133,25 @@ export default function CreateUserModal({
             type="password"
             fullWidth
           />
+          <TextInput
+            control={control}
+            label="Confirmar Senha"
+            name="confirmPassword"
+            type="password"
+            fullWidth
+          />
           <Controller
             name="role"
             control={control}
-            defaultValue=""
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <TextField
                 {...field}
                 select
                 label="Papel"
                 fullWidth
                 disabled={isLoadingRoles}
-                error={!field.value}
-                helperText={!field.value ? "Selecione um papel" : ""}
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
               >
                 <MenuItem value="" disabled>
                   Selecione um papel
@@ -142,11 +176,11 @@ export default function CreateUserModal({
             justifyContent="flex-end"
             sx={{ mt: 3 }}
           >
-            <Button onClick={handleInternalClose} disabled={isSubmitting}>
+            <Button onClick={handleInternalClose} disabled={createUser.isPending}>
               Cancelar
             </Button>
-            <Button variant="contained" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Criando..." : "Criar"}
+            <Button variant="contained" type="submit" disabled={createUser.isPending}>
+              {createUser.isPending ? "Criando..." : "Criar"}
             </Button>
           </Stack>
         </Stack>

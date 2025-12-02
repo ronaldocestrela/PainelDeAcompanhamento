@@ -11,8 +11,8 @@ import type { CampaingDetail, SelectOption } from "../../lib/types";
 import type { CampaingList } from "../../lib/types"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  createCampaingSchema,
-  type CreateCampaingSchema,
+  updateCampaingSchema,
+  type UpdateCampaingSchema,
 } from "../../lib/schemas/createCampaingSchema";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ import TextInput from "../../app/shared/components/TextInput";
 interface EditCampaignModalProps {
   open: boolean;
   onClose: () => void;
-  onUpdate: (id: string, data: CreateCampaingSchema) => Promise<void>;
+  onUpdate: (id: string, data: UpdateCampaingSchema) => Promise<void>;
   isSubmitting: boolean;
   campaignToEdit: CampaingDetail | null; 
   campaignListItem?: CampaingList | null; 
@@ -56,11 +56,10 @@ export default function EditCampaignModal({
     control,
     reset,
     handleSubmit,
-    formState: { errors },
     trigger,
-  } = useForm({
+  } = useForm<UpdateCampaingSchema>({
     mode: "onTouched",
-    resolver: zodResolver(createCampaingSchema),
+    resolver: zodResolver(updateCampaingSchema),
     defaultValues: {
       Name: "",
       ExpertId: "",
@@ -79,10 +78,8 @@ export default function EditCampaignModal({
     if (open && campaignToEdit) {
       const valuesToReset = {
         Name: campaignToEdit.name,
-        
         ExpertId: campaignToEdit.expertId || findIdByName(expertsList, campaignListItem?.expertName) || "",
         AnalystId: campaignToEdit.analystId || findIdByName(analystsList, campaignListItem?.analystName) || "",
-        
         BookmakerId: campaignToEdit.bookMakerId || "", 
       };
     
@@ -103,12 +100,14 @@ export default function EditCampaignModal({
     }
   }, [open, campaignToEdit, campaignListItem, reset, trigger, expertsList, analystsList]); 
 
-  const onSubmitHandle = async (data: CreateCampaingSchema) => {
+  const onSubmitHandle = async (data: UpdateCampaingSchema) => {
     if (!campaignToEdit) return;
 
     try {
-      const payload = { ...data };
-
+      const payload = {
+        ...data,
+        Name: campaignToEdit.name, // Garantir que o nome original seja enviado
+      };
       await onUpdate(campaignToEdit.id, payload);
     } catch (error) {
       console.error(
@@ -140,12 +139,10 @@ export default function EditCampaignModal({
         >
           <TextInput
             control={control}
-            autoFocus
             label="Nome da Campanha"
             name="Name"
-            error={!!errors.Name}
-            helperText={errors.Name?.message}
             fullWidth
+            disabled
           />
           <Controller
             control={control}

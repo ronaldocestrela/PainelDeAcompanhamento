@@ -1,12 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "react-router";
 
 import agente from "../api/agents";
-import type { ListUsers } from "../types";
+import type { ListUsers, CreateUserPayload } from "../types";
 import { useAccount } from "./useAccount";
 
 export const useUser = (id?: string) => {
   const location = useLocation();
+  const queryClient = useQueryClient();
 
   const { currentUser } = useAccount();
 
@@ -40,11 +41,22 @@ export const useUser = (id?: string) => {
       location.pathname === "/users",
   });
 
+  const createUserMutation = useMutation({
+    mutationFn: async (userData: CreateUserPayload) => {
+      const response = await agente.post('/account/new-user', userData);
+      return response.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+
   return {
     user,
     isLoadingUser,
     users,
     isLoadingUsers,
     refetchUsers,
+    createUser: createUserMutation,
   };
 }

@@ -115,13 +115,13 @@ export default function CampaingsDataContainer() {
 
   return (
     <>
-      <ListPageLayoutCampaings title="Campanhas" actionButton={addButton}>
+      <ListPageLayoutCampaings title="Campanhas">
         {!campaigns || campaigns.length === 0 ? (
           <Box sx={{ textAlign: "center", mt: 4 }}>
             <Typography variant="h6">Nenhuma campanha encontrada</Typography>
-            <Typography variant="body1">
+            {/* <Typography variant="body1">
               Clique no botão '+' para adicionar uma nova campanha.
-            </Typography>
+            </Typography> */}
           </Box>
         ) : (
           <CampaingsTable campaigns={campaigns} onEdit={handleOpenEditModal} />

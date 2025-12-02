@@ -17,6 +17,8 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import BusinessCenterOutlinedIcon from '@mui/icons-material/BusinessCenterOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import { useNavigate, useLocation } from "react-router";
@@ -24,23 +26,25 @@ import { useAccount } from "../../../lib/hooks/useAccount";
 
 const mainListItems = [
   { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
-  { text: "Analistas", icon: <AnalyticsRoundedIcon />, link: "/analysts" },
+  // { text: "Analistas", icon: <AnalyticsRoundedIcon />, link: "/analysts" },
   { text: "Experts", icon: <ContentPasteIcon />, link: "/experts" },
-  { text: "Vendedores", icon: <ContentPasteIcon />, link: "/sellers" },
+  // { text: "Vendedores", icon: <ContentPasteIcon />, link: "/sellers" },
   { text: "Campanhas", icon: <CampaignIcon />, link: "/campaings" },
-  { text: "Casas de apostas", icon: <AssuredWorkloadIcon />, link: "/bookmakers",},
-  { text: "Relatório de Leads", icon: <Groups2Icon />, link: "/leads" },
-  { text: "Produtos", icon: <ShoppingBasketIcon />, link: "/products" },
-  { text: "Vendas", icon: <AttachMoneyIcon />, link: "/sales" },
-  { text: "Ações Marketing", icon: <LocalGroceryStoreIcon />, link: "/marketing" },
+  // { text: "Casas de apostas", icon: <AssuredWorkloadIcon />, link: "/bookmakers",},
+  // { text: "Relatório de Leads", icon: <Groups2Icon />, link: "/leads" },
+  // { text: "Produtos", icon: <ShoppingBasketIcon />, link: "/products" },
+  // { text: "Vendas", icon: <AttachMoneyIcon />, link: "/sales" },
+  // { text: "Ações Marketing", icon: <LocalGroceryStoreIcon />, link: "/marketing" },
   { text: "Acordos", icon: <HandshakeIcon />, link: "/deals" },
-  { text: "Ranking", icon: <FormatListBulletedIcon/>, link: "/ranking-externo", external: true },
+  // { text: "Ranking", icon: <FormatListBulletedIcon/>, link: "/ranking-externo", external: true },
+  { text: "Empresas", icon: <BusinessCenterOutlinedIcon />, link: "/companies" },
 ];
 
 const secondaryListItems = [
-  { text: "Settings", icon: <SettingsRoundedIcon /> },
-  { text: "About", icon: <InfoRoundedIcon /> },
-  { text: "Feedback", icon: <HelpRoundedIcon /> },
+  // { text: "Settings", icon: <SettingsRoundedIcon /> },
+  // { text: "About", icon: <InfoRoundedIcon /> },
+  // { text: "Feedback", icon: <HelpRoundedIcon /> },
+  { text: "Usuários", icon: <PeopleOutlinedIcon />, link: "/users" },
 ];
 
 export default function MenuContent() {
@@ -52,7 +56,7 @@ export default function MenuContent() {
     navigate(path);
   };
 
-  const isAdmin = currentUser?.roleName?.toLowerCase() === "admin";
+  const isAdmin = currentUser?.roleName?.toLowerCase() === "superadmin";
 
   const visibleMainListItems = isAdmin
     ? mainListItems
@@ -96,16 +100,20 @@ export default function MenuContent() {
           </ListItem>
         ))}
       </List>
-      <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      {isAdmin && (
+        <List dense>
+          {secondaryListItems.map((item, index) => (
+            <a href={item.link} style={{ textDecoration: "none", color: "inherit" }} key={index}>
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
+              <ListItemButton>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+            </a>
+          ))}
+        </List>
+      )}
     </Stack>
   );
 }

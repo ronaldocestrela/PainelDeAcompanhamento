@@ -4,6 +4,9 @@ FROM node:lts-alpine
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
+# Argumento para a URL da API
+ARG VITE_API_URL
+
 # Copia os arquivos do projeto para o contêiner
 COPY package.json package-lock.json ./
 

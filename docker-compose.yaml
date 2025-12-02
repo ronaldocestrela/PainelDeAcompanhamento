@@ -1,7 +1,10 @@
 services:
   vite:
     container_name: bet-board-webclient
-    build: .
+    build: 
+      context: .
+      args:
+        - VITE_API_URL=${VITE_API_URL}
     restart: always
     ports:
       - "3000:3000" # Mapeia a porta do host para o contêiner

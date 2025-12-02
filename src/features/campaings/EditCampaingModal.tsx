@@ -104,9 +104,11 @@ export default function EditCampaignModal({
     if (!campaignToEdit) return;
 
     try {
+      const bookMakerId = campaignToEdit.bookMakerId || (campaignToEdit.reports && campaignToEdit.reports.length > 0 ? campaignToEdit.reports[0].bookMakerId : null);
       const payload = {
         ...data,
         Name: campaignToEdit.name, // Garantir que o nome original seja enviado
+        BookmakerId: bookMakerId, // Usar o bookMakerId da campanha ou do primeiro relatório
       };
       await onUpdate(campaignToEdit.id, payload);
     } catch (error) {

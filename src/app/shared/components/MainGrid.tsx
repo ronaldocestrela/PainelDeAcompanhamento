@@ -9,7 +9,7 @@ import StatCard, { type StatCardProps } from "./StatCard";
 import DatePeriod from "./DatePeriod";
 import { type GridRowsProp } from "@mui/x-data-grid";
 import { useDashboard } from "./DashboardContext";
-import { rows as allGridRows } from "../internals/data/GridData";
+// Import removed: rows from GridData was unused after modifying the rendering logic
 import HighlightedCard from "./HighlightedCard";
 import SessionsChart from "./SessionsChart";
 import PageViewsBarChart from "./PageViewsBarChart";
@@ -52,9 +52,10 @@ export default function MainGrid() {
     gridRows: GridRowsProp;
   }>(() => {
 
-    let selectedRows: GridRowsProp = selectedExpertId ? allGridRows : [];
+    // Render empty state only when there are no expert reports (no data)
+    const hasReports = expertReports && expertReports.length > 0;
 
-    if (selectedRows.length === 0) {
+    if (!hasReports) {
       const emptyState: Omit<StatCardProps, "title"> = {
         value: "0",
         interval: "Nenhum dado",
@@ -70,7 +71,6 @@ export default function MainGrid() {
         gridRows: [],
       };
     }
-
     const dynamicCardData: StatCardProps[] = [
       {
         title: "Comissão", value: totalCommission.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalCommission.total >= 0 ? "up" : "down",
@@ -86,9 +86,20 @@ export default function MainGrid() {
       },
     ];
 
-    const flattenedReports = expertReports.flatMap((expert: any) => expert.reports.map((report: any) => ({ ...report, expertName: expert.expertName })));
+    const flattenedReports = expertReports.flatMap((expert: any, eIndex: number) =>
+      expert.reports.map((report: any, rIndex: number) => ({
+        id: report.id ?? `${expert.expertName}-${eIndex}-${rIndex}-${report.reportDate ?? ''}`,
+        ...report,
+        expertName: expert.expertName,
+        expertId: expert.id,
+      }))
+    );
 
-    return { cardData: dynamicCardData, gridRows: flattenedReports };
+    const rowsToDisplay = selectedExpertId
+      ? flattenedReports.filter((r: any) => r.expertId === selectedExpertId)
+      : flattenedReports;
+
+    return { cardData: dynamicCardData, gridRows: rowsToDisplay };
   }, [selectedExpertId, totalCpa, totalRevenue, totalCommission, expertReports]);
 
   return (
@@ -119,7 +130,7 @@ export default function MainGrid() {
         </Box>
       </Stack>
       <Grid container spacing={2} columns={12}>
-        {cardData.map((card, index) => (
+        {cardData.map((card: StatCardProps, index: number) => (
           <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
             <StatCard {...card} />
           </Grid>

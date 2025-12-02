@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -15,16 +15,39 @@ import SessionsChart from "./SessionsChart";
 import PageViewsBarChart from "./PageViewsBarChart";
 import CustomizedTreeView from "./CustomizedTreeView";
 import ChartUserByCountry from "./ChartUserByCountry";
+import agente from "../../../lib/api/agents";
 
 export default function MainGrid() {
-  const { selectedExpertId } = useDashboard();
+  const { selectedExpertId, startDate, endDate } = useDashboard();
+  const [totalRevenue, setTotalRevenue] = useState({ total: 0, dailyTotals: [] as number[] });
+  const [totalCpa, setTotalCpa] = useState({ total: 0, dailyTotals: [] as number[] });
+  const [totalCommission, setTotalCommission] = useState({ total: 0, dailyTotals: [] as number[] });
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      const fromDate = startDate.toISOString().split('T')[0];
+      const toDate = endDate.toISOString().split('T')[0];
+      
+      agente.get('Reports/total-rev', { params: { FromDate: fromDate, ToDate: toDate } })
+        .then((response: any) => setTotalRevenue(response.data))
+        .catch((error: any) => console.error('Error fetching total revenue:', error));
+      
+      agente.get('Reports/total-cpa', { params: { FromDate: fromDate, ToDate: toDate } })
+        .then((response: any) => setTotalCpa(response.data))
+        .catch((error: any) => console.error('Error fetching total CPA:', error));
+      
+      agente.get('Reports/total-commision', { params: { FromDate: fromDate, ToDate: toDate } })
+        .then((response: any) => setTotalCommission(response.data))
+        .catch((error: any) => console.error('Error fetching total commission:', error));
+    }
+  }, [startDate, endDate]);
 
   const { cardData, gridRows } = useMemo<{
     cardData: StatCardProps[];
     gridRows: GridRowsProp;
   }>(() => {
 
-    let selectedRows: GridRowsProp = [];
+    let selectedRows: GridRowsProp = selectedExpertId ? allGridRows : [];
 
     if (selectedRows.length === 0) {
       const emptyState: Omit<StatCardProps, "title"> = {
@@ -43,27 +66,23 @@ export default function MainGrid() {
       };
     }
 
-    const totalUsers = selectedRows.reduce((sum, row) => sum + (row.users || 0), 0);
-    const totalEvents = selectedRows.reduce((sum, row) => sum + (row.eventCount || 0), 0);
-    const totalConversions = selectedRows.reduce((sum, row) => sum + (row.conversions?.length || 0), 0);
-
     const dynamicCardData: StatCardProps[] = [
       {
-        title: "Comissão", value: totalUsers.toLocaleString(), interval: "Dados do expert", trend: "up",
-        data: selectedRows.map((r) => r.users).filter(Boolean),
+        title: "Comissão", value: totalCommission.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalCommission.total >= 0 ? "up" : "down",
+        data: totalCommission.dailyTotals,
       },
       {
-        title: "CPA", value: totalConversions.toLocaleString(), interval: "Dados do expert", trend: "down",
-        data: selectedRows.map((r) => r.conversions[0]).filter(Boolean),
+        title: "CPA", value: totalCpa.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalCpa.total >= 0 ? "up" : "down",
+        data: totalCpa.dailyTotals,
       },
       {
-        title: "Reavenue", value: totalEvents.toLocaleString(), interval: "Dados do expert", trend: "neutral",
-        data: selectedRows.map((r) => r.eventCount).filter(Boolean),
+        title: "Reavenue", value: totalRevenue.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalRevenue.total >= 0 ? "up" : "down",
+        data: totalRevenue.dailyTotals,
       },
     ];
 
     return { cardData: dynamicCardData, gridRows: selectedRows };
-  }, [selectedExpertId]);
+  }, [selectedExpertId, totalCpa, totalRevenue, totalCommission]);
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>

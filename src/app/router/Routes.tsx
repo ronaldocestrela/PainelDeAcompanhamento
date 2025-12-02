@@ -19,6 +19,7 @@ import RankingStandalone from "../../features/ranking/RankingStandalone";
 import SellersDashboard from "../../features/sellers/ListSellers";
 import DealsPage from "../../features/deals/DealsPage";
 import ListCompanies from "../../features/companies/ListCompanies";
+import ReportsRecalculate from "../../features/reports/ReportsRecalculate";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
           { path: "ranking", element: <ListRanking /> },
           { path: "deals", element: <DealsPage /> },
           { path: "companies", element: <ListCompanies /> },
+          { path: "recalculate", element: <ReportsRecalculate /> },
         ],
       },
     ],

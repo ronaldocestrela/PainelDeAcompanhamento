@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         COMPOSE_FILE = 'docker-compose.yaml' // Nome do arquivo Docker Compose
+        // URLs da aplicação
+        VITE_API_URL = "${env.VITE_API_URL}"
     }
 
     stages {

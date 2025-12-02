@@ -4,6 +4,7 @@ import { useUser } from "../../lib/hooks/useUser";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useRole } from "../../lib/hooks/useRole";
+import { useExperts } from "../../lib/hooks/useExperts";
 import CreateUserModal from "./CreateUserModal";
 import ListPageLayoutUser from "./ListPageLayoutUser";
 import UserTable from "./UserTable";
@@ -16,6 +17,7 @@ export default function UserDataContainer({
   pageTitle,
 }: ExpertDataContainerProps) {
   const { roles, isLoadingRoles } = useRole();
+  const { projects: experts, isLoading: isLoadingExperts } = useExperts();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const handleOpenCreateModal = () => setOpenCreateModal(true);
@@ -41,6 +43,8 @@ export default function UserDataContainer({
         onClose={handleCloseCreateModal}
         roles={roles || []}
         isLoadingRoles={isLoadingRoles}
+        experts={experts?.map(expert => ({ id: expert.id, name: expert.name })) || []}
+        isLoadingExperts={isLoadingExperts}
       />
     </>
   );

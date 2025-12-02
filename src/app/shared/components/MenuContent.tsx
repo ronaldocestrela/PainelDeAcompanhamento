@@ -17,6 +17,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import BusinessCenterOutlinedIcon from '@mui/icons-material/BusinessCenterOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -38,6 +39,7 @@ const mainListItems = [
   { text: "Acordos", icon: <HandshakeIcon />, link: "/deals" },
   // { text: "Ranking", icon: <FormatListBulletedIcon/>, link: "/ranking-externo", external: true },
   { text: "Empresas", icon: <BusinessCenterOutlinedIcon />, link: "/companies" },
+  // { text: "Relatórios", icon: <AnalyticsRoundedIcon />, link: "/reports" },
 ];
 
 const secondaryListItems = [
@@ -45,6 +47,7 @@ const secondaryListItems = [
   // { text: "About", icon: <InfoRoundedIcon /> },
   // { text: "Feedback", icon: <HelpRoundedIcon /> },
   { text: "Usuários", icon: <PeopleOutlinedIcon />, link: "/users" },
+  { text: "Recacular", icon: <CalculateOutlinedIcon />, link: "/recalculate" },
 ];
 
 export default function MenuContent() {

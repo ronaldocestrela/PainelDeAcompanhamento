@@ -7,6 +7,7 @@ export const createUserSchema = z.object({
   password: z.string().min(6, { message: "Senha deve ter pelo menos 6 caracteres" }),
   confirmPassword: z.string().min(6, { message: "Confirmação de senha é obrigatória" }),
   role: z.string().min(1, { message: "Papel é obrigatório" }),
+  expertId: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Senhas não coincidem",
   path: ["confirmPassword"],

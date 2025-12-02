@@ -233,6 +233,7 @@ type CreateUserPayload = {
   isSaler: boolean;
   isAnalyst: boolean;
   RoleUser: string;
+  expertId?: string;
 };
 
 // Marketing Actions
@@ -328,6 +329,7 @@ export type {
 
 export type Deal = {
   id: string;
+  name: string;
   bookmakerName: string;
   companyName: string;
   revValueExpert: number;
@@ -346,6 +348,7 @@ export type Deal = {
 };
 
 export type CreateDealData = {
+  name: string;
   bookmakerName: string;
   revValueExpert: number;
   revValueAgency: number;

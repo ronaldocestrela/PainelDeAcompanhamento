@@ -21,6 +21,7 @@ interface CreateDealModalProps {
 }
 
 type CreateDealForm = {
+  name: string;
   bookmakerName: string;
   revValueExpert: number;
   revValueAgency: number;
@@ -60,6 +61,7 @@ export default function CreateDealModal({
 }: CreateDealModalProps) {
   const { control, handleSubmit, reset, formState, watch } = useForm<CreateDealForm>({
     defaultValues: {
+      name: "",
       bookmakerName: "",
       revValueExpert: 0,
       revValueAgency: 0,
@@ -99,6 +101,7 @@ export default function CreateDealModal({
       
       // Converter strings para números e preparar payload
       const payload: CreateDealData = {
+        name: data.name,
         bookmakerName: selectedHouse?.name || data.bookmakerName,
         revValueExpert: data.revValueExpert,
         revValueAgency: data.revValueAgency,
@@ -142,6 +145,16 @@ export default function CreateDealModal({
           Novo Acordo
         </Typography>
         <Stack spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>
+          {/* Nome do Acordo */}
+          <TextInput
+            control={control}
+            name="name"
+            label="Nome do Acordo"
+            fullWidth
+            error={!!formState.errors?.name}
+            helperText={formState.errors?.name?.message}
+          />
+
           {/* Casa de Apostas */}
           <TextInput
             control={control}

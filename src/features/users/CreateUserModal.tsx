@@ -18,6 +18,8 @@ interface CreateUserModalProps {
   onClose: () => void;
   roles: { id: string; name: string }[];
   isLoadingRoles: boolean;
+  experts: { id: string; name: string }[];
+  isLoadingExperts: boolean;
 }
 
 const modalStyle = {
@@ -38,6 +40,8 @@ export default function CreateUserModal({
   onClose,
   roles,
   isLoadingRoles,
+  experts,
+  isLoadingExperts,
 }: CreateUserModalProps) {
   const { createUser } = useUser();
   const { control, handleSubmit, reset } = useForm<CreateUserSchema>({
@@ -50,6 +54,7 @@ export default function CreateUserModal({
       password: "",
       confirmPassword: "",
       role: "",
+      expertId: "",
     },
   });
 
@@ -62,6 +67,7 @@ export default function CreateUserModal({
         password: "",
         confirmPassword: "",
         role: "",
+        expertId: "",
       });
     }
   }, [open, reset]);
@@ -77,7 +83,8 @@ export default function CreateUserModal({
         isActive: true,
         isSaler: selectedRole?.name === "Saler",
         isAnalyst: selectedRole?.name === "Analyst",
-        RoleUser: data.role,
+        RoleUser: selectedRole?.name || data.role,
+        expertId: data.expertId || undefined,
       };
       await createUser.mutateAsync(payload);
       onClose();
@@ -164,6 +171,36 @@ export default function CreateUserModal({
                   roles?.map((role) => (
                     <MenuItem key={role.id} value={role.id}>
                       {role.name}
+                    </MenuItem>
+                  ))
+                )}
+              </TextField>
+            )}
+          />
+          <Controller
+            name="expertId"
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                select
+                label="Expert (Opcional)"
+                fullWidth
+                disabled={isLoadingExperts}
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+              >
+                <MenuItem value="">
+                  <em>Nenhum</em>
+                </MenuItem>
+                {isLoadingExperts ? (
+                  <MenuItem value="" disabled>
+                    Carregando experts...
+                  </MenuItem>
+                ) : (
+                  experts?.map((expert) => (
+                    <MenuItem key={expert.id} value={expert.id}>
+                      {expert.name}
                     </MenuItem>
                   ))
                 )}

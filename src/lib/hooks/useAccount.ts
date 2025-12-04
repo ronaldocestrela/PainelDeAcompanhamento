@@ -13,13 +13,24 @@ export const useAccount = () => {
 
   const loginUser = useMutation({
     mutationFn: async (creds: LoginSchema) => {
-      await agent.post("/login?useCookies=true", creds);
+      console.log('🚀 Iniciando login...');
+      const response = await agent.post("/login?useCookies=true", creds);
+      console.log('✅ Login realizado com sucesso:', response.status);
+      return response.data;
     },
     onSuccess: async () => {
+      console.log('🔄 Invalidando queries e buscando informações do usuário...');
+      // Invalida e força uma nova busca das informações do usuário
       await queryClinet.invalidateQueries({
         queryKey: ["user"],
       });
+      await queryClinet.refetchQueries({
+        queryKey: ["user"],
+      });
     },
+    onError: (error: any) => {
+      console.log('❌ Erro no login:', error?.response?.status, error?.message);
+    }
   });
 
   const registerUser = useMutation({
@@ -45,14 +56,30 @@ export const useAccount = () => {
   const { data: currentUser, isLoading: loadinUserInfo } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const response = await agent.get<User>("/account/user-info");
-      return response.data;
+      try {
+        console.log('🔍 Buscando informações do usuário...');
+        const response = await agent.get<User>("/account/user-info");
+        console.log('✅ Usuário encontrado:', response.data);
+        return response.data;
+      } catch (error: any) {
+        console.log('❌ Erro ao buscar usuário:', error?.response?.status);
+        // Se não conseguir buscar o usuário, remove qualquer dado em cache
+        queryClinet.removeQueries({ queryKey: ["user"] });
+        throw error;
+      }
     },
     enabled:
-      !queryClinet.getQueryData(["user"]) &&
       location.pathname !== "/login" &&
       location.pathname !== "/register" &&
       location.pathname !== "/signin",
+    retry: (failureCount, error: any) => {
+      // Não tenta novamente se for erro 401 (não autorizado)
+      if (error?.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutos
   });
 
   return {

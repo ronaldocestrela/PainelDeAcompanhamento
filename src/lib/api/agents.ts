@@ -11,10 +11,13 @@ const sleep = (delay: number) => {
 
 const agente = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json',
+    }
 });
 
-agente.interceptors.response.use(config => {
+agente.interceptors.request.use(config => {
     store.uiStore.isBusy();
     return config;
 });
@@ -45,7 +48,17 @@ agente.interceptors.response.use(
                 }
                 break;
             case 401:
-                toast.error('Usuário ou senha invalida');
+                // Se for uma tentativa de login, mostra erro específico
+                if (error.config?.url?.includes('/login')) {
+                    toast.error('Usuário ou senha inválida');
+                } else {
+                    // Para outras rotas, pode ser que a sessão expirou
+                    toast.error('Sessão expirada. Faça login novamente.');
+                    // Redireciona para o login apenas se não estiver já na página de login
+                    if (!window.location.pathname.includes('/signin')) {
+                        router.navigate('/signin');
+                    }
+                }
                 break;
             case 404:
                 router.navigate('not-found');

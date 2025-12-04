@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { loginSchema, type LoginSchema } from "../../lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ImageListItem from "@mui/material/ImageListItem";
+import { debugAuth } from "../../lib/util/debugAuth";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -80,11 +81,24 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    await loginUser.mutateAsync(data, {
-      onSuccess: () => {
+    try {
+      console.log('🔍 Estado antes do login:');
+      debugAuth.fullAuthCheck();
+      
+      await loginUser.mutateAsync(data);
+      
+      console.log('🔍 Estado depois do login:');
+      debugAuth.fullAuthCheck();
+      
+      // Aguarda um pouco para garantir que o cookie foi definido
+      setTimeout(() => {
+        console.log('🔍 Estado antes da navegação:');
+        debugAuth.fullAuthCheck();
         navigate(location.state?.form || "/dashboard");
-      },
-    });
+      }, 100);
+    } catch (error) {
+      console.error('Erro no login:', error);
+    }
   };
 
   const [emailError, setEmailError] = React.useState(false);

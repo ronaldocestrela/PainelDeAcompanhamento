@@ -51,6 +51,13 @@ export const useUser = (id?: string) => {
     },
   });
 
+  const updatePasswordMutation = useMutation({
+    mutationFn: async (passwordData: { UserId: string; NewPassword: string }) => {
+      const response = await agente.put('/account/update-password', passwordData);
+      return response.data;
+    },
+  });
+
   return {
     user,
     isLoadingUser,
@@ -58,5 +65,6 @@ export const useUser = (id?: string) => {
     isLoadingUsers,
     refetchUsers,
     createUser: createUserMutation,
+    updatePassword: updatePasswordMutation,
   };
 }

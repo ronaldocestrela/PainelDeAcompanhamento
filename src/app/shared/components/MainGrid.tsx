@@ -31,15 +31,15 @@ export default function MainGrid() {
       
       console.log('📅 Buscando dados do período:', fromDate, 'até', toDate);
       
-      agente.get('Reports/total-rev', { params: { InitialDate: fromDate, FinalDate: toDate } })
+      agente.get('Reports/total-rev', { params: { FromDate: fromDate, ToDate: toDate } })
         .then((response: any) => setTotalRevenue(response.data))
         .catch((error: any) => console.error('Error fetching total revenue:', error));
       
-      agente.get('Reports/total-cpa', { params: { InitialDate: fromDate, FinalDate: toDate } })
+      agente.get('Reports/total-cpa', { params: { FromDate: fromDate, ToDate: toDate } })
         .then((response: any) => setTotalCpa(response.data))
         .catch((error: any) => console.error('Error fetching total CPA:', error));
       
-      agente.get('Reports/total-commision', { params: { InitialDate: fromDate, FinalDate: toDate } })
+      agente.get('Reports/total-commision', { params: { FromDate: fromDate, ToDate: toDate } })
         .then((response: any) => setTotalCommission(response.data))
         .catch((error: any) => console.error('Error fetching total commission:', error));
       

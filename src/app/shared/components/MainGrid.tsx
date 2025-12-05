@@ -18,7 +18,7 @@ import ChartUserByCountry from "./ChartUserByCountry";
 import agente from "../../../lib/api/agents";
 
 export default function MainGrid() {
-  const { selectedExpertId, startDate, endDate } = useDashboard();
+  const { startDate, endDate } = useDashboard();
   const [totalRevenue, setTotalRevenue] = useState({ total: 0, dailyTotals: [] as number[] });
   const [totalCpa, setTotalCpa] = useState({ total: 0, dailyTotals: [] as number[] });
   const [totalCommission, setTotalCommission] = useState({ total: 0, dailyTotals: [] as number[] });
@@ -28,6 +28,8 @@ export default function MainGrid() {
     if (startDate && endDate) {
       const fromDate = startDate.toISOString().split('T')[0];
       const toDate = endDate.toISOString().split('T')[0];
+      
+      console.log('📅 Buscando dados do período:', fromDate, 'até', toDate);
       
       agente.get('Reports/total-rev', { params: { InitialDate: fromDate, FinalDate: toDate } })
         .then((response: any) => setTotalRevenue(response.data))
@@ -42,7 +44,10 @@ export default function MainGrid() {
         .catch((error: any) => console.error('Error fetching total commission:', error));
       
       agente.get('reports/by-expert', { params: { InitialDate: fromDate, FinalDate: toDate } })
-        .then((response: any) => setExpertReports(response.data))
+        .then((response: any) => {
+          console.log('✅ Resposta da API reports/by-expert:', response.data);
+          setExpertReports(response.data);
+        })
         .catch((error: any) => console.error('Error fetching expert reports:', error));
     }
   }, [startDate, endDate]);
@@ -52,10 +57,13 @@ export default function MainGrid() {
     gridRows: GridRowsProp;
   }>(() => {
 
+    console.log('🔍 MainGrid - expertReports:', expertReports);
+    
     // Render empty state only when there are no expert reports (no data)
     const hasReports = expertReports && expertReports.length > 0;
 
     if (!hasReports) {
+      console.log('⚠️ MainGrid - Nenhum dado de expertReports');
       const emptyState: Omit<StatCardProps, "title"> = {
         value: "0",
         interval: "Nenhum dado",
@@ -95,12 +103,14 @@ export default function MainGrid() {
       }))
     );
 
-    const rowsToDisplay = selectedExpertId
-      ? flattenedReports.filter((r: any) => r.expertId === selectedExpertId)
-      : flattenedReports;
+    console.log('📊 MainGrid - flattenedReports:', flattenedReports);
+
+    const rowsToDisplay = flattenedReports;
+
+    console.log('✅ MainGrid - rowsToDisplay:', rowsToDisplay);
 
     return { cardData: dynamicCardData, gridRows: rowsToDisplay };
-  }, [selectedExpertId, totalCpa, totalRevenue, totalCommission, expertReports]);
+  }, [totalCpa, totalRevenue, totalCommission, expertReports]);
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>

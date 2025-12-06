@@ -3,7 +3,7 @@ import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import SelectContent from "./SelectContent";
+// import SelectContent from "./SelectContent";
 import MenuContent from "./MenuContent";
 import OptionsMenu from "./OptionsMenu";
 import UserMenu from "../../layout/UserMenu";
@@ -56,7 +56,7 @@ export default function SideMenu() {
           p: 1.5,
         }}
       >
-        <SelectContent />
+        {/* <SelectContent /> */}
       </Box>
       <Divider />
       <Box

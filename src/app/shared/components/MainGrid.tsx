@@ -60,25 +60,25 @@ export default function MainGrid() {
     console.log('🔍 MainGrid - expertReports:', expertReports);
     
     // Render empty state only when there are no expert reports (no data)
-    const hasReports = expertReports && expertReports.length > 0;
+    // const hasReports = expertReports && expertReports.length > 0;
 
-    if (!hasReports) {
-      console.log('⚠️ MainGrid - Nenhum dado de expertReports');
-      const emptyState: Omit<StatCardProps, "title"> = {
-        value: "0",
-        interval: "Nenhum dado",
-        trend: "neutral",
-        data: [],
-      };
-      return {
-        cardData: [
-          { ...emptyState, title: "Comissão" },
-          { ...emptyState, title: "CPA" },
-          { ...emptyState, title: "Reavenue" },
-        ],
-        gridRows: [],
-      };
-    }
+    // if (!hasReports) {
+    //   console.log('⚠️ MainGrid - Nenhum dado de expertReports');
+    //   const emptyState: Omit<StatCardProps, "title"> = {
+    //     value: "0",
+    //     interval: "Nenhum dado",
+    //     trend: "neutral",
+    //     data: [],
+    //   };
+    //   return {
+    //     cardData: [
+    //       { ...emptyState, title: "Comissão" },
+    //       { ...emptyState, title: "CPA" },
+    //       { ...emptyState, title: "Reavenue" },
+    //     ],
+    //     gridRows: [],
+    //   };
+    // }
     const dynamicCardData: StatCardProps[] = [
       {
         title: "Comissão", value: totalCommission.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalCommission.total >= 0 ? "up" : "down",

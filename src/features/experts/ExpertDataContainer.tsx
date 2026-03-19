@@ -110,7 +110,7 @@ export default function ExpertDataContainer({
         ) : (
           <Grid container spacing={2}>
             {experts.map((expert) => (
-              <Grid key={expert.id} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+              <Grid key={expert.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                 <ExpertCard
                   expert={expert}
                   onEdit={() => handleOpenEditModal({ ...expert, reports: [] })}

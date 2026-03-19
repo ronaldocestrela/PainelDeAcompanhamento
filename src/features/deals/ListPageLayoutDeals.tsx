@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import type { ReactNode } from "react";
 
 interface ListPageLayoutDealsProps {
@@ -13,49 +13,25 @@ export default function ListPageLayoutDeals({
   actionButton,
 }: ListPageLayoutDealsProps) {
   return (
-    <Paper
+    <Box
       sx={{
-        p: 3,
+        width: "100%",
         display: "flex",
         flexDirection: "column",
-        margin: { xs: "1rem", md: "2rem auto" },
-        width: {
-          xs: "calc(100vw - 2rem)",
-          sm: "700px",
-          md: "900px",
-          lg: "1000px",
-          xl: "1200px",
-        },
-        maxWidth: "1400px",
-        boxSizing: "border-box",
       }}
-      elevation={2}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 2,
-          position: "relative",
-        }}
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 3 }}
       >
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
+        <Typography variant="h5" component="h1" fontWeight={600}>
           {title}
         </Typography>
-        {actionButton && (
-          <Box sx={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)" }}>
-            {actionButton}
-          </Box>
-        )}
-      </Box>
+        {actionButton && <Box>{actionButton}</Box>}
+      </Stack>
       <Box sx={{ width: "100%" }}>{children}</Box>
-    </Paper>
+    </Box>
   );
 }

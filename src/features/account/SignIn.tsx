@@ -135,7 +135,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+      setEmailErrorMessage("Por favor, insira um e-mail válido.");
       isValid = false;
     } else {
       setEmailError(false);
@@ -144,7 +144,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("A senha deve ter pelo menos 6 caracteres.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -174,7 +174,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Sign in
+            Login
           </Typography>
           <Box
             component="form"
@@ -191,7 +191,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email">E-mail</FormLabel>
               <TextInput
                 error={emailError}
                 helperText={emailErrorMessage}
@@ -209,7 +209,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <TextInput
                 control={control}
                 error={passwordError}
@@ -228,7 +228,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Lembrar-me"
             />
             <ForgotPassword open={open} handleClose={handleClose} />
             <Button
@@ -238,7 +238,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               onClick={validateInputs}
               disabled={!isValid || isSubmitting}
             >
-              Sign in
+              Login
             </Button>
             <Link
               component="button"
@@ -247,10 +247,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               variant="body2"
               sx={{ alignSelf: "center" }}
             >
-              Forgot your password?
+              Esqueceu sua senha?
             </Link>
           </Box>
-          <Divider>or</Divider>
+          <Divider>ou</Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {/* <Button
               fullWidth
@@ -269,13 +269,13 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               Sign in with Facebook
             </Button> */}
             <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
+              Não tem uma conta?{" "}
               <Link
                 href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >
-                Sign up
+                Cadastre-se
               </Link>
             </Typography>
           </Box>

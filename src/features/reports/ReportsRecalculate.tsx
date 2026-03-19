@@ -9,6 +9,7 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -139,14 +140,25 @@ export default function ReportsRecalculate() {
                 name="startDate"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="date"
+                  <DatePicker
                     label="Data Inicial"
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    error={!!errors.startDate}
-                    helperText={errors.startDate?.message}
+                    value={
+                      field.value ? new Date(field.value + "T00:00:00") : null
+                    }
+                    onChange={(date) => {
+                      if (date instanceof Date && !isNaN(date.getTime())) {
+                        field.onChange(date.toISOString().split("T")[0]);
+                      } else {
+                        field.onChange("");
+                      }
+                    }}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!errors.startDate,
+                        helperText: errors.startDate?.message,
+                      },
+                    }}
                   />
                 )}
               />
@@ -154,14 +166,25 @@ export default function ReportsRecalculate() {
                 name="endDate"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="date"
+                  <DatePicker
                     label="Data Final"
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    error={!!errors.endDate}
-                    helperText={errors.endDate?.message}
+                    value={
+                      field.value ? new Date(field.value + "T00:00:00") : null
+                    }
+                    onChange={(date) => {
+                      if (date instanceof Date && !isNaN(date.getTime())) {
+                        field.onChange(date.toISOString().split("T")[0]);
+                      } else {
+                        field.onChange("");
+                      }
+                    }}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!errors.endDate,
+                        helperText: errors.endDate?.message,
+                      },
+                    }}
                   />
                 )}
               />

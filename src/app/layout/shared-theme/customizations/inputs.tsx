@@ -376,9 +376,21 @@ export const inputsCustomizations: Components<Theme> = {
   },
   MuiOutlinedInput: {
     styleOverrides: {
-      input: {
+      input: ({ theme }) => ({
         padding: 0,
-      },
+        '&:-webkit-autofill': {
+          WebkitBoxShadow: `0 0 0 1000px hsl(147, 30%, 99%) inset !important`,
+          WebkitTextFillColor: `${gray[800]} !important`,
+          caretColor: `${gray[800]} !important`,
+        },
+        ...theme.applyStyles('dark', {
+          '&:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0 1000px hsl(147, 20%, 6%) inset !important`,
+            WebkitTextFillColor: 'hsl(0, 0%, 100%) !important',
+            caretColor: 'hsl(0, 0%, 100%) !important',
+          },
+        }),
+      }),
       root: ({ theme }) => ({
         padding: '8px 12px',
         color: (theme.vars || theme).palette.text.primary,

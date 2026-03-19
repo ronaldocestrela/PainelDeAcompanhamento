@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import AddIcon from "@mui/icons-material/Add";
 import { useExperts } from "../../lib/hooks/useExperts";
 import ListPageLayout from "./ListPageLayout";
@@ -40,7 +41,7 @@ export default function ExpertDataContainer({
 
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedExpert, setSelectedExpert] = useState<ExpertDetail | null>(
-    null
+    null,
   );
 
   const handleOpenEditModal = (expert: ExpertDetail) => {
@@ -55,7 +56,7 @@ export default function ExpertDataContainer({
 
   const handleUpdateExpert = async (
     id: string,
-    expertData: CreateExpertSchema
+    expertData: CreateExpertSchema,
   ) => {
     if (updateExpert && selectedExpert) {
       const updatedExpertPayload: ExpertUpdate = {
@@ -84,13 +85,14 @@ export default function ExpertDataContainer({
   }
 
   const addButton = (
-    <IconButton
-      color="primary"
-      aria-label="Criar novo expert"
+    <Button
+      variant="contained"
+      size="small"
+      startIcon={<AddIcon />}
       onClick={handleOpenCreateModal}
     >
-      <AddIcon />
-    </IconButton>
+      Novo Expert
+    </Button>
   );
 
   return (
@@ -102,27 +104,20 @@ export default function ExpertDataContainer({
               Não foi possível encontrar nenhum expert
             </Typography>
             <Typography variant="body1">
-              Clique no botão '+' para adicionar um novo expert.
+              Clique no botão 'Novo Expert' para adicionar.
             </Typography>
           </Box>
         ) : (
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 2,
-              justifyContent: "flex-start",
-              mt: 2,
-            }}
-          >
+          <Grid container spacing={2}>
             {experts.map((expert) => (
-              <ExpertCard
-                key={expert.id}
-                expert={expert}
-                onEdit={() => handleOpenEditModal({ ...expert, reports: [] })}
-              />
+              <Grid key={expert.id} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+                <ExpertCard
+                  expert={expert}
+                  onEdit={() => handleOpenEditModal({ ...expert, reports: [] })}
+                />
+              </Grid>
             ))}
-          </Box>
+          </Grid>
         )}
       </ListPageLayout>
       <CreateExpertModal

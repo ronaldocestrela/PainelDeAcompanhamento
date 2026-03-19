@@ -12,8 +12,12 @@ interface StartPeriodProps {
   iconOnly?: boolean;
 }
 
-export default function StartPeriod({ value, onChange, iconOnly = false }: StartPeriodProps) {
-  const [open, setOpen] = useState(false); 
+export default function StartPeriod({
+  value,
+  onChange,
+  iconOnly = false,
+}: StartPeriodProps) {
+  const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   return (
@@ -25,7 +29,7 @@ export default function StartPeriod({ value, onChange, iconOnly = false }: Start
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         slots={{
-          field: (props) => (
+          field: (props) =>
             iconOnly ? (
               <Button
                 variant="outlined"
@@ -33,10 +37,14 @@ export default function StartPeriod({ value, onChange, iconOnly = false }: Start
                 ref={buttonRef}
                 onClick={() => setOpen(!open)}
                 sx={{
-                  minWidth: 'auto',
+                  minWidth: "auto",
                   p: 1,
                 }}
-                aria-label={value ? `Start date: ${dayjs(value).format('DD/MM/YYYY')}` : "Select start date"}
+                aria-label={
+                  value
+                    ? `Start date: ${dayjs(value).format("DD/MM/YYYY")}`
+                    : "Select start date"
+                }
               >
                 <CalendarTodayRoundedIcon fontSize="small" />
               </Button>
@@ -46,28 +54,29 @@ export default function StartPeriod({ value, onChange, iconOnly = false }: Start
                 size="small"
                 ref={buttonRef}
                 onClick={() => setOpen(!open)}
-                startIcon={<CalendarTodayRoundedIcon fontSize="small" />}
-                sx={{ minWidth: '120px' }}
+                startIcon={<CalendarTodayRoundedIcon sx={{ fontSize: 14 }} />}
+                sx={{ minWidth: "auto", px: 1, py: 0.5, fontSize: "0.75rem" }}
               >
-                {value ? dayjs(value).format('DD/MM/YYYY') : 'Selecione'}
+                {value ? dayjs(value).format("DD/MM/YYYY") : "Selecione"}
               </Button>
-            )
-          )
+            ),
         }}
         slotProps={{
           popper: {
-            placement: 'bottom-end',
+            placement: "bottom-end",
             anchorEl: buttonRef.current,
-            sx: iconOnly ? {} : { 
-                position: 'fixed',
-                top: '50px !important',
-                right: '180px !important', 
-                left: 'auto !important',
-                transform: 'none !important',
-              },
+            sx: iconOnly
+              ? {}
+              : {
+                  position: "fixed",
+                  top: "50px !important",
+                  right: "180px !important",
+                  left: "auto !important",
+                  transform: "none !important",
+                },
           },
         }}
-        views={['day', 'month', 'year']}
+        views={["day", "month", "year"]}
       />
     </LocalizationProvider>
   );

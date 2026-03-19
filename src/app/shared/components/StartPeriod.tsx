@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import Button from "@mui/material/Button";
-import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
+import DateRangeRoundedIcon from "@mui/icons-material/DateRangeRounded";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -24,12 +24,14 @@ export default function StartPeriod({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         value={value ? dayjs(value) : null}
-        onChange={(newValue) => onChange(newValue ? newValue.toDate() : null)}
+        onChange={(newValue) =>
+          onChange(newValue ? dayjs(newValue).toDate() : null)
+        }
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         slots={{
-          field: (props) =>
+          field: () =>
             iconOnly ? (
               <Button
                 variant="outlined"
@@ -46,16 +48,26 @@ export default function StartPeriod({
                     : "Select start date"
                 }
               >
-                <CalendarTodayRoundedIcon fontSize="small" />
+                <DateRangeRoundedIcon fontSize="small" />
               </Button>
             ) : (
               <Button
-                variant="outlined"
+                variant="text"
                 size="small"
                 ref={buttonRef}
                 onClick={() => setOpen(!open)}
-                startIcon={<CalendarTodayRoundedIcon sx={{ fontSize: 14 }} />}
-                sx={{ minWidth: "auto", px: 1, py: 0.5, fontSize: "0.75rem" }}
+                startIcon={<DateRangeRoundedIcon sx={{ fontSize: 16 }} />}
+                sx={{
+                  minWidth: "auto",
+                  px: 1.5,
+                  py: 0.5,
+                  fontSize: "0.8rem",
+                  fontWeight: 500,
+                  textTransform: "none",
+                  borderRadius: 1.5,
+                  color: "text.primary",
+                  "&:hover": { bgcolor: "action.selected" },
+                }}
               >
                 {value ? dayjs(value).format("DD/MM/YYYY") : "Selecione"}
               </Button>

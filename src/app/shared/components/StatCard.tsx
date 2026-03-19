@@ -80,7 +80,7 @@ export default function StatCard({
   return (
     <Card variant="outlined" sx={{ height: '100%', flexGrow: 1 }}>
       <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
+        <Typography component="h2" variant="subtitle1" fontWeight={600} gutterBottom>
           {title}
         </Typography>
         <Stack
@@ -92,7 +92,7 @@ export default function StatCard({
               direction="row"
               sx={{ justifyContent: 'space-between', alignItems: 'center' }}
             >
-              <Typography variant="h4" component="p">
+              <Typography variant="h3" component="p">
                 {value}
               </Typography>
               <Chip size="small" color={color} label={trendValues[trend]} />

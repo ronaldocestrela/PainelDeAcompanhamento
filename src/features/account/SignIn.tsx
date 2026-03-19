@@ -14,7 +14,7 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import ForgotPassword from "../../app/shared/components/ForgotPassword";
 import AppTheme from "../../app/layout/shared-theme/AppTheme";
-import ColorModeSelect from "../../app/layout/shared-theme/ColorModeSelect";
+import ColorModeIconDropdown from "../../app/layout/shared-theme/ColorModeIconDropdown";
 // import { SitemarkIcon } from "../../app/shared/components/CustomIcons";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useLocation, useNavigate } from "react-router";
@@ -158,7 +158,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect
+        <ColorModeIconDropdown
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
         />
         <Card variant="outlined">

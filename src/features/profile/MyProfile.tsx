@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 import { useAccount } from "../../lib/hooks/useAccount";
 import { PersonalInfoCard } from "./PersonalInfoCard";
@@ -58,10 +58,9 @@ export default function MyProfile() {
 
   if (loadingProfile)
     return (
-      <Typography variant="body1" sx={{ textAlign: "center", mt: 4 }}>
-        {" "}
-        Loding Profile ...
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+        <CircularProgress />
+      </Box>
     );
 
   if (!profile)

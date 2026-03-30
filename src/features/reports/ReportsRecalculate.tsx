@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   TextField,
   MenuItem,
   Typography,
@@ -76,7 +77,18 @@ export default function ReportsRecalculate() {
   };
 
   if (isLoadingHouses) {
-    return <Typography>Carregando casas de apostas...</Typography>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "200px",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (

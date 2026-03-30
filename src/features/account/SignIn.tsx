@@ -23,6 +23,8 @@ import { useForm } from "react-hook-form";
 import { loginSchema, type LoginSchema } from "../../lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ImageListItem from "@mui/material/ImageListItem";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { debugAuth } from "../../lib/util/debugAuth";
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -106,6 +108,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleTogglePassword = () => setShowPassword((prev) => !prev);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -216,7 +221,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 helperText={passwordErrorMessage}
                 name="password"
                 placeholder="••••••"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 autoFocus
@@ -224,6 +229,29 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={passwordError ? "error" : "primary"}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <Box
+                        component="span"
+                        onClick={handleTogglePassword}
+                        aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          cursor: "pointer",
+                          color: "text.disabled",
+                          pr: 0.5,
+                          "&:hover": { color: "text.secondary" },
+                        }}
+                      >
+                        {showPassword
+                          ? <VisibilityOff sx={{ fontSize: 16 }} />
+                          : <Visibility sx={{ fontSize: 16 }} />}
+                      </Box>
+                    ),
+                  },
+                }}
               />
             </FormControl>
             <FormControlLabel

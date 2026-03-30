@@ -235,7 +235,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                       <Box
                         component="span"
                         onClick={handleTogglePassword}
-                        aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                        aria-label={
+                          showPassword ? "Ocultar senha" : "Mostrar senha"
+                        }
                         sx={{
                           display: "flex",
                           alignItems: "center",
@@ -245,9 +247,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                           "&:hover": { color: "text.secondary" },
                         }}
                       >
-                        {showPassword
-                          ? <VisibilityOff sx={{ fontSize: 16 }} />
-                          : <Visibility sx={{ fontSize: 16 }} />}
+                        {showPassword ? (
+                          <VisibilityOff sx={{ fontSize: 16 }} />
+                        ) : (
+                          <Visibility sx={{ fontSize: 16 }} />
+                        )}
                       </Box>
                     ),
                   },

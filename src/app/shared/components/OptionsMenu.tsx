@@ -1,20 +1,20 @@
-import { styled } from '@mui/material/styles';
-import Divider, { dividerClasses } from '@mui/material/Divider';
-import Menu from '@mui/material/Menu';
-import MuiMenuItem from '@mui/material/MenuItem';
-import { paperClasses } from '@mui/material/Paper';
-import { listClasses } from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import MenuButton from './MenuButton';
-import { useState } from 'react';
-import { useAccount } from '../../../lib/hooks/useAccount';
-import { useNavigate } from 'react-router';
+import { styled } from "@mui/material/styles";
+import Divider, { dividerClasses } from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
+import MuiMenuItem from "@mui/material/MenuItem";
+import { paperClasses } from "@mui/material/Paper";
+import { listClasses } from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import MenuButton from "./MenuButton";
+import { useState } from "react";
+import { useAccount } from "../../../lib/hooks/useAccount";
+import { useNavigate } from "react-router";
 
 const MenuItem = styled(MuiMenuItem)({
-  margin: '2px 0',
+  margin: "2px 0",
 });
 
 export default function OptionsMenu() {
@@ -33,7 +33,7 @@ export default function OptionsMenu() {
       <MenuButton
         aria-label="Open menu"
         onClick={handleClick}
-        sx={{ borderColor: 'transparent' }}
+        sx={{ borderColor: "transparent" }}
       >
         <MoreVertRoundedIcon />
       </MenuButton>
@@ -43,41 +43,41 @@ export default function OptionsMenu() {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         sx={{
           [`& .${listClasses.root}`]: {
-            padding: '4px',
+            padding: "4px",
           },
           [`& .${paperClasses.root}`]: {
             padding: 0,
           },
           [`& .${dividerClasses.root}`]: {
-            margin: '4px -4px',
+            margin: "4px -4px",
           },
         }}
       >
         <MenuItem
           onClick={() => {
             handleClose();
-            navigate('/myprofile');
+            navigate("/myprofile");
           }}
         >
-          Profile
+          Perfil
         </MenuItem>
         {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
         <Divider />
-        {currentUser?.roleName?.toLowerCase() === 'admin' && (
-          <MenuItem 
+        {currentUser?.roleName?.toLowerCase() === "admin" && (
+          <MenuItem
             onClick={() => {
               handleClose();
-              navigate('/users');
+              navigate("/users");
             }}
           >
             Usuários
           </MenuItem>
         )}
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
+        <MenuItem onClick={handleClose}>Configurações</MenuItem>
         <Divider />
         <MenuItem
           // onClick={handleClose}
@@ -88,11 +88,11 @@ export default function OptionsMenu() {
           //   },
           // }}
           onClick={() => {
-          logoutUser.mutate();
-          handleClose();
-        }}
+            logoutUser.mutate();
+            handleClose();
+          }}
         >
-          <ListItemText>Logout</ListItemText>
+          <ListItemText>Sair</ListItemText>
           <ListItemIcon>
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>

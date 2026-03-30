@@ -6,11 +6,11 @@ import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import Groups2Icon from "@mui/icons-material/Groups2";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
-import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import HandshakeIcon from "@mui/icons-material/Handshake";
@@ -21,7 +21,7 @@ import { useDashboard } from "./DashboardContext";
 const mainListItems = [
   { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
   // { text: "Analistas", icon: <AnalyticsRoundedIcon />, link: "/analysts" },
-  { text: "Experts", icon: <ContentPasteIcon />, link: "/experts" },
+  { text: "Experts", icon: <Groups2Icon />, link: "/experts" },
   // { text: "Vendedores", icon: <ContentPasteIcon />, link: "/sellers" },
   { text: "Campanhas", icon: <CampaignIcon />, link: "/campaings" },
   // { text: "Casas de apostas", icon: <AssuredWorkloadIcon />, link: "/bookmakers",},
@@ -33,7 +33,7 @@ const mainListItems = [
   // { text: "Ranking", icon: <FormatListBulletedIcon/>, link: "/ranking-externo", external: true },
   {
     text: "Empresas",
-    icon: <BusinessCenterOutlinedIcon />,
+    icon: <CorporateFareIcon />,
     link: "/companies",
   },
   // { text: "Relatórios", icon: <AnalyticsRoundedIcon />, link: "/reports" },

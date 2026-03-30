@@ -66,7 +66,9 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <Box sx={{ px: 1.5, py: 1, display: "flex", alignItems: "center", gap: 1 }}>
+        <Box
+          sx={{ px: 1.5, py: 1, display: "flex", alignItems: "center", gap: 1 }}
+        >
           <Avatar
             src={currentUser?.imageUrl}
             alt={currentUser?.name}
@@ -76,7 +78,11 @@ export default function OptionsMenu() {
             <Typography variant="caption" fontWeight={600} lineHeight={1.3}>
               {currentUser?.name} {currentUser?.lastName}
             </Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.65rem", display: "block" }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontSize: "0.65rem", display: "block" }}
+            >
               {currentUser?.email}
             </Typography>
           </Box>

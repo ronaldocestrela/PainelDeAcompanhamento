@@ -1,4 +1,11 @@
-import { Box, CircularProgress, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 import { useAccount } from "../../lib/hooks/useAccount";
 import { PersonalInfoCard } from "./PersonalInfoCard";
@@ -17,7 +24,7 @@ export default function MyProfile() {
   const [editMode, setEditMode] = useState(false);
   const { currentUser } = useAccount();
   const { profile, loadingProfile, uploadPhoto, updateProfile } = useProfile(
-    id ?? currentUser?.id
+    id ?? currentUser?.id,
   );
 
   const handlePhotoUpload = (file: Blob) => {
@@ -52,13 +59,20 @@ export default function MyProfile() {
           console.error("Profile update failed:", error);
           toast.error("Erro ao atualizar perfil. Tente novamente.");
         },
-      }
+      },
     );
   };
 
   if (loadingProfile)
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );

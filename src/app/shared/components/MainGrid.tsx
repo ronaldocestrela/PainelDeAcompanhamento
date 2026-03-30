@@ -7,18 +7,13 @@ import Copyright from "../internals/components/Copyright";
 import CustomizedDataGrid from "./CustomizedDataGrid";
 import StatCard, { type StatCardProps } from "./StatCard";
 import DatePeriod from "./DatePeriod";
+import HouseFilter from "./HouseFilter";
 import { type GridRowsProp } from "@mui/x-data-grid";
 import { useDashboard } from "./DashboardContext";
-// Import removed: rows from GridData was unused after modifying the rendering logic
-import HighlightedCard from "./HighlightedCard";
-import SessionsChart from "./SessionsChart";
-import PageViewsBarChart from "./PageViewsBarChart";
-import CustomizedTreeView from "./CustomizedTreeView";
-import ChartUserByCountry from "./ChartUserByCountry";
 import agente from "../../../lib/api/agents";
 
 export default function MainGrid() {
-  const { startDate, endDate } = useDashboard();
+  const { startDate, endDate, selectedBookmakerId } = useDashboard();
   const [totalRevenue, setTotalRevenue] = useState({
     total: 0,
     dailyTotals: [] as number[],
@@ -40,9 +35,15 @@ export default function MainGrid() {
 
       console.log("📅 Buscando dados do período:", fromDate, "até", toDate);
 
+      const bookmakerId = selectedBookmakerId;
+
       agente
         .get("Reports/total-rev", {
-          params: { FromDate: fromDate, ToDate: toDate },
+          params: {
+            FromDate: fromDate,
+            ToDate: toDate,
+            BookmakerId: bookmakerId,
+          },
         })
         .then((response: any) => setTotalRevenue(response.data))
         .catch((error: any) =>
@@ -51,7 +52,11 @@ export default function MainGrid() {
 
       agente
         .get("Reports/total-cpa", {
-          params: { FromDate: fromDate, ToDate: toDate },
+          params: {
+            FromDate: fromDate,
+            ToDate: toDate,
+            BookmakerId: bookmakerId,
+          },
         })
         .then((response: any) => setTotalCpa(response.data))
         .catch((error: any) =>
@@ -60,7 +65,11 @@ export default function MainGrid() {
 
       agente
         .get("Reports/total-commision", {
-          params: { FromDate: fromDate, ToDate: toDate },
+          params: {
+            FromDate: fromDate,
+            ToDate: toDate,
+            BookmakerId: bookmakerId,
+          },
         })
         .then((response: any) => setTotalCommission(response.data))
         .catch((error: any) =>
@@ -69,7 +78,11 @@ export default function MainGrid() {
 
       agente
         .get("reports/by-expert", {
-          params: { InitialDate: fromDate, FinalDate: toDate },
+          params: {
+            InitialDate: fromDate,
+            FinalDate: toDate,
+            BookmakerId: bookmakerId,
+          },
         })
         .then((response: any) => {
           console.log("✅ Resposta da API reports/by-expert:", response.data);
@@ -79,7 +92,7 @@ export default function MainGrid() {
           console.error("Error fetching expert reports:", error),
         );
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, selectedBookmakerId]);
 
   const { cardData, gridRows } = useMemo<{
     cardData: StatCardProps[];
@@ -179,7 +192,8 @@ export default function MainGrid() {
             </Typography>
           )} */}
         </Stack>
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <HouseFilter />
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <DatePeriod iconOnly />
           </Box>

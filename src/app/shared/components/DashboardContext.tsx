@@ -15,6 +15,8 @@ interface DashboardContextType {
   setEndDate: (date: Date | null) => void;
   sidebarOpen: boolean;
   toggleSidebar: () => void;
+  selectedBookmakerId: string | undefined;
+  setSelectedBookmakerId: (id: string | undefined) => void;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(
@@ -31,6 +33,9 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [selectedBookmakerId, setSelectedBookmakerId] = useState<
+    string | undefined
+  >(undefined);
 
   const toggleSidebar = useMemo(
     () => () => setSidebarOpen((prev) => !prev),
@@ -47,8 +52,17 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
       setEndDate,
       sidebarOpen,
       toggleSidebar,
+      selectedBookmakerId,
+      setSelectedBookmakerId,
     }),
-    [selectedExpertId, startDate, endDate, sidebarOpen, toggleSidebar],
+    [
+      selectedExpertId,
+      startDate,
+      endDate,
+      sidebarOpen,
+      toggleSidebar,
+      selectedBookmakerId,
+    ],
   );
 
   return (

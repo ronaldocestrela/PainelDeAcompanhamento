@@ -1,62 +1,56 @@
-import { styled } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-// import SelectContent from "./SelectContent";
 import MenuContent from "./MenuContent";
 import OptionsMenu from "./OptionsMenu";
 import UserMenu from "../../layout/UserMenu";
-import { ImageListItem } from "@mui/material";
+import { useDashboard } from "./DashboardContext";
 
 const drawerWidth = 240;
-
-const Drawer = styled(MuiDrawer)({
-  width: drawerWidth,
-  flexShrink: 0,
-  boxSizing: "border-box",
-  mt: 10,
-  [`& .${drawerClasses.paper}`]: {
-    width: drawerWidth,
-    boxSizing: "border-box",
-  },
-});
+const collapsedWidth = 64;
 
 export default function SideMenu() {
+  const { sidebarOpen } = useDashboard();
+
   return (
-    <Drawer
+    <MuiDrawer
       variant="permanent"
       sx={{
         display: { xs: "none", md: "block" },
+        width: sidebarOpen ? drawerWidth : collapsedWidth,
+        flexShrink: 0,
+        transition: "width 0.25s ease-in-out",
         [`& .${drawerClasses.paper}`]: {
+          width: sidebarOpen ? drawerWidth : collapsedWidth,
+          boxSizing: "border-box",
           backgroundColor: "background.paper",
+          overflowX: "hidden",
+          transition: "width 0.25s ease-in-out",
         },
       }}
     >
       <Box
         sx={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: 64,
+          px: 1.5,
           mt: "calc(var(--template-frame-height, 0px) + 4px)",
-          p: 1.5,
+          overflow: "hidden",
         }}
       >
-        <ImageListItem>
-          <img
-            src="/public/logoBetBoard.png"
-            alt="Logo"
-            style={{ width: "100%", height: "auto" }}
-          />
-        </ImageListItem>
-      </Box>
-      <Divider />
-      <Box
-        sx={{
-          display: "flex",
-          mt: "calc(var(--template-frame-height, 0px) + 4px)",
-          p: 1.5,
-        }}
-      >
-        {/* <SelectContent /> */}
+        <img
+          src="/public/logoBetBoard.png"
+          alt="Logo"
+          style={{
+            height: sidebarOpen ? "auto" : 36,
+            width: sidebarOpen ? "100%" : 36,
+            objectFit: "contain",
+            transition: "all 0.25s ease-in-out",
+          }}
+        />
       </Box>
       <Divider />
       <Box
@@ -72,16 +66,18 @@ export default function SideMenu() {
       <Stack
         direction="row"
         sx={{
-          p: 2,
+          p: sidebarOpen ? 2 : 1,
           gap: 1,
           alignItems: "center",
+          justifyContent: sidebarOpen ? "flex-start" : "center",
           borderTop: "1px solid",
           borderColor: "divider",
+          transition: "padding 0.25s ease-in-out",
         }}
       >
-        <UserMenu />
+        {sidebarOpen && <UserMenu />}
         <OptionsMenu />
       </Stack>
-    </Drawer>
+    </MuiDrawer>
   );
 }

@@ -1,5 +1,9 @@
-import { Box, IconButton } from "@mui/material";
-import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid";
+import { Box, CircularProgress, IconButton } from "@mui/material";
+import {
+  DataGrid,
+  type GridColDef,
+  type GridRenderCellParams,
+} from "@mui/x-data-grid";
 import KeyIcon from "@mui/icons-material/Key";
 import { useState } from "react";
 import { useUser } from "../../lib/hooks/useUser";
@@ -9,7 +13,10 @@ interface UserTableProps {
   onEdit: (user: any) => void;
 }
 
-const getColumns = (_onEdit: (user: any) => void, onChangePassword: (user: any) => void): GridColDef[] => [
+const getColumns = (
+  _onEdit: (user: any) => void,
+  onChangePassword: (user: any) => void,
+): GridColDef[] => [
   { field: "name", headerName: "Nome", width: 200, flex: 1 },
   { field: "lastName", headerName: "Sobrenome", width: 200, flex: 1 },
   { field: "email", headerName: "Email", width: 250, flex: 1 },
@@ -50,8 +57,15 @@ export default function UserTable({ onEdit }: UserTableProps) {
 
   if (isLoadingUsers) {
     return (
-      <Box sx={{ textAlign: "center", mt: 4 }}>
-        <p>Loading users...</p>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "200px",
+        }}
+      >
+        <CircularProgress />
       </Box>
     );
   }
@@ -67,7 +81,7 @@ export default function UserTable({ onEdit }: UserTableProps) {
         disableRowSelectionOnClick
         autoHeight
       />
-      
+
       {selectedUser && (
         <ChangePasswordModal
           open={passwordModalOpen}

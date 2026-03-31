@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import Button from "@mui/material/Button";
-import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
+import DateRangeRoundedIcon from "@mui/icons-material/DateRangeRounded";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -12,20 +12,26 @@ interface EndPeriodProps {
   iconOnly?: boolean;
 }
 
-export default function EndPeriod({ value, onChange, iconOnly = false }: EndPeriodProps) {
-  const [open, setOpen] = useState(false); 
+export default function EndPeriod({
+  value,
+  onChange,
+  iconOnly = false,
+}: EndPeriodProps) {
+  const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         value={value ? dayjs(value) : null}
-        onChange={(newValue) => onChange(newValue ? newValue.toDate() : null)}
+        onChange={(newValue) =>
+          onChange(newValue ? dayjs(newValue).toDate() : null)
+        }
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         slots={{
-          field: (props) => (
+          field: () =>
             iconOnly ? (
               <Button
                 variant="outlined"
@@ -33,41 +39,56 @@ export default function EndPeriod({ value, onChange, iconOnly = false }: EndPeri
                 ref={buttonRef}
                 onClick={() => setOpen(!open)}
                 sx={{
-                  minWidth: 'auto',
+                  minWidth: "auto",
                   p: 1,
                 }}
-                aria-label={value ? `End date: ${dayjs(value).format('DD/MM/YYYY')}` : "Select end date"}
+                aria-label={
+                  value
+                    ? `End date: ${dayjs(value).format("DD/MM/YYYY")}`
+                    : "Select end date"
+                }
               >
-                <CalendarTodayRoundedIcon fontSize="small" />
+                <DateRangeRoundedIcon fontSize="small" />
               </Button>
             ) : (
               <Button
-                variant="outlined"
+                variant="text"
                 size="small"
                 ref={buttonRef}
                 onClick={() => setOpen(!open)}
-                startIcon={<CalendarTodayRoundedIcon fontSize="small" />}
-                sx={{ minWidth: '120px' }}
+                startIcon={<DateRangeRoundedIcon sx={{ fontSize: 16 }} />}
+                sx={{
+                  minWidth: "auto",
+                  px: 1.5,
+                  py: 0.5,
+                  fontSize: "0.8rem",
+                  fontWeight: 500,
+                  textTransform: "none",
+                  borderRadius: 1.5,
+                  color: "text.primary",
+                  "&:hover": { bgcolor: "action.selected" },
+                }}
               >
-                {value ? dayjs(value).format('DD/MM/YYYY') : 'Selecione'}
+                {value ? dayjs(value).format("DD/MM/YYYY") : "Selecione"}
               </Button>
-            )
-          )
+            ),
         }}
         slotProps={{
           popper: {
-            placement: 'bottom-end',
+            placement: "bottom-end",
             anchorEl: buttonRef.current,
-            sx: iconOnly ? {} : { 
-                position: 'fixed',
-                top: '50px !important', 
-                right: '16px !important', 
-                left: 'auto !important',
-                transform: 'none !important',
-              },
+            sx: iconOnly
+              ? {}
+              : {
+                  position: "fixed",
+                  top: "50px !important",
+                  right: "16px !important",
+                  left: "auto !important",
+                  transform: "none !important",
+                },
           },
         }}
-        views={['day', 'month', 'year']}
+        views={["day", "month", "year"]}
       />
     </LocalizationProvider>
   );

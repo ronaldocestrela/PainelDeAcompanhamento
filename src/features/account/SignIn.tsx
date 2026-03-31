@@ -14,7 +14,7 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import ForgotPassword from "../../app/shared/components/ForgotPassword";
 import AppTheme from "../../app/layout/shared-theme/AppTheme";
-import ColorModeSelect from "../../app/layout/shared-theme/ColorModeSelect";
+import ColorModeIconDropdown from "../../app/layout/shared-theme/ColorModeIconDropdown";
 // import { SitemarkIcon } from "../../app/shared/components/CustomIcons";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useLocation, useNavigate } from "react-router";
@@ -23,6 +23,8 @@ import { useForm } from "react-hook-form";
 import { loginSchema, type LoginSchema } from "../../lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ImageListItem from "@mui/material/ImageListItem";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { debugAuth } from "../../lib/util/debugAuth";
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -37,10 +39,10 @@ const Card = styled(MuiCard)(({ theme }) => ({
     maxWidth: "450px",
   },
   boxShadow:
-    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
+    "hsla(147, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(147, 25%, 10%, 0.05) 0px 15px 35px -5px",
   ...theme.applyStyles("dark", {
     boxShadow:
-      "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
+      "hsla(147, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(147, 25%, 10%, 0.08) 0px 15px 35px -5px",
   }),
 }));
 
@@ -58,11 +60,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     zIndex: -1,
     inset: 0,
     backgroundImage:
-      "radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))",
+      "radial-gradient(ellipse at 50% 50%, hsl(147, 50%, 97%), hsl(147, 30%, 99%))",
     backgroundRepeat: "no-repeat",
     ...theme.applyStyles("dark", {
       backgroundImage:
-        "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
+        "radial-gradient(at 50% 50%, hsla(147, 30%, 16%, 0.5), hsl(147, 20%, 6%))",
     }),
   },
 }));
@@ -82,22 +84,22 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
   const onSubmit = async (data: LoginSchema) => {
     try {
-      console.log('🔍 Estado antes do login:');
+      console.log("🔍 Estado antes do login:");
       debugAuth.fullAuthCheck();
-      
+
       await loginUser.mutateAsync(data);
-      
-      console.log('🔍 Estado depois do login:');
+
+      console.log("🔍 Estado depois do login:");
       debugAuth.fullAuthCheck();
-      
+
       // Aguarda um pouco para garantir que o cookie foi definido
       setTimeout(() => {
-        console.log('🔍 Estado antes da navegação:');
+        console.log("🔍 Estado antes da navegação:");
         debugAuth.fullAuthCheck();
         navigate(location.state?.form || "/dashboard");
       }, 100);
     } catch (error) {
-      console.error('Erro no login:', error);
+      console.error("Erro no login:", error);
     }
   };
 
@@ -106,6 +108,9 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleTogglePassword = () => setShowPassword((prev) => !prev);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -135,7 +140,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+      setEmailErrorMessage("Por favor, insira um e-mail válido.");
       isValid = false;
     } else {
       setEmailError(false);
@@ -144,7 +149,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("A senha deve ter pelo menos 6 caracteres.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -158,15 +163,15 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect
+        <ColorModeIconDropdown
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
         />
         <Card variant="outlined">
-          <ImageListItem >
+          <ImageListItem>
             <img
               src="/public/logoBetBoard.png"
               alt="Logo"
-              style={{ width: '100%', height: 'auto' }}
+              style={{ width: "100%", height: "auto" }}
             />
           </ImageListItem>
           <Typography
@@ -174,7 +179,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Sign in
+            Login
           </Typography>
           <Box
             component="form"
@@ -191,7 +196,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email">E-mail</FormLabel>
               <TextInput
                 error={emailError}
                 helperText={emailErrorMessage}
@@ -209,14 +214,14 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <TextInput
                 control={control}
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
                 placeholder="••••••"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 autoFocus
@@ -224,11 +229,38 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={passwordError ? "error" : "primary"}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <Box
+                        component="span"
+                        onClick={handleTogglePassword}
+                        aria-label={
+                          showPassword ? "Ocultar senha" : "Mostrar senha"
+                        }
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          cursor: "pointer",
+                          color: "text.disabled",
+                          pr: 0.5,
+                          "&:hover": { color: "text.secondary" },
+                        }}
+                      >
+                        {showPassword ? (
+                          <VisibilityOff sx={{ fontSize: 16 }} />
+                        ) : (
+                          <Visibility sx={{ fontSize: 16 }} />
+                        )}
+                      </Box>
+                    ),
+                  },
+                }}
               />
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Lembrar-me"
             />
             <ForgotPassword open={open} handleClose={handleClose} />
             <Button
@@ -238,7 +270,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               onClick={validateInputs}
               disabled={!isValid || isSubmitting}
             >
-              Sign in
+              Login
             </Button>
             <Link
               component="button"
@@ -247,10 +279,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               variant="body2"
               sx={{ alignSelf: "center" }}
             >
-              Forgot your password?
+              Esqueceu sua senha?
             </Link>
           </Box>
-          <Divider>or</Divider>
+          <Divider>ou</Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {/* <Button
               fullWidth
@@ -269,13 +301,13 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               Sign in with Facebook
             </Button> */}
             <Typography sx={{ textAlign: "center" }}>
-              Don&apos;t have an account?{" "}
+              Não tem uma conta?{" "}
               <Link
                 href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >
-                Sign up
+                Cadastre-se
               </Link>
             </Typography>
           </Box>

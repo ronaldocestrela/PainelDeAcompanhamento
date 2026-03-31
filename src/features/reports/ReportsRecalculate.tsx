@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   TextField,
   MenuItem,
   Typography,
@@ -9,9 +10,13 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { recalculateReportsSchema, type RecalculateReportsSchema } from "../../lib/schemas/reportsSchema";
+import {
+  recalculateReportsSchema,
+  type RecalculateReportsSchema,
+} from "../../lib/schemas/reportsSchema";
 import { useHouses } from "../../lib/hooks/useHouses";
 import { useReports } from "../../lib/hooks/useReports";
 import type { ListBookmakers } from "../../lib/types";
@@ -31,7 +36,9 @@ const modalStyle = {
 
 export default function ReportsRecalculate() {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [formData, setFormData] = useState<RecalculateReportsSchema | null>(null);
+  const [formData, setFormData] = useState<RecalculateReportsSchema | null>(
+    null,
+  );
 
   const { houses, isLoadingHouses } = useHouses();
   const { recalculateReports } = useReports();
@@ -70,69 +77,137 @@ export default function ReportsRecalculate() {
   };
 
   if (isLoadingHouses) {
-    return <Typography>Carregando casas de apostas...</Typography>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "200px",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Recalcular Relatórios
-      </Typography>
-      <Stack spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="bookmakerId"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              select
-              label="Casa de Apostas"
-              fullWidth
-              error={!!errors.bookmakerId}
-              helperText={errors.bookmakerId?.message}
-            >
-              {houses?.map((house: ListBookmakers) => (
-                <MenuItem key={house.id} value={house.id}>
-                  {house.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        />
-        <Controller
-          name="startDate"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="date"
-              label="Data Inicial"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              error={!!errors.startDate}
-              helperText={errors.startDate?.message}
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          width: "100%",
+          pt: 6,
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: 520,
+            p: 4,
+            borderRadius: 3,
+            border: "1px solid",
+            borderColor: "divider",
+            bgcolor: "background.paper",
+          }}
+        >
+          <Typography variant="h5" fontWeight={600} gutterBottom>
+            Recalcular Relatórios
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            Selecione a casa de apostas e o período para recalcular os
+            relatórios.
+          </Typography>
+
+          <Stack
+            spacing={2.5}
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <Controller
+              name="bookmakerId"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  select
+                  label="Casa de Apostas"
+                  fullWidth
+                  error={!!errors.bookmakerId}
+                  helperText={errors.bookmakerId?.message}
+                >
+                  {houses?.map((house: ListBookmakers) => (
+                    <MenuItem key={house.id} value={house.id}>
+                      {house.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
             />
-          )}
-        />
-        <Controller
-          name="endDate"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="date"
-              label="Data Final"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              error={!!errors.endDate}
-              helperText={errors.endDate?.message}
-            />
-          )}
-        />
-        <Button type="submit" variant="contained" fullWidth>
-          Enviar
-        </Button>
-      </Stack>
+
+            <Stack direction="row" spacing={2}>
+              <Controller
+                name="startDate"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Data Inicial"
+                    value={
+                      field.value ? new Date(field.value + "T00:00:00") : null
+                    }
+                    onChange={(date) => {
+                      if (date instanceof Date && !isNaN(date.getTime())) {
+                        field.onChange(date.toISOString().split("T")[0]);
+                      } else {
+                        field.onChange("");
+                      }
+                    }}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!errors.startDate,
+                        helperText: errors.startDate?.message,
+                      },
+                    }}
+                  />
+                )}
+              />
+              <Controller
+                name="endDate"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Data Final"
+                    value={
+                      field.value ? new Date(field.value + "T00:00:00") : null
+                    }
+                    onChange={(date) => {
+                      if (date instanceof Date && !isNaN(date.getTime())) {
+                        field.onChange(date.toISOString().split("T")[0]);
+                      } else {
+                        field.onChange("");
+                      }
+                    }}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        error: !!errors.endDate,
+                        helperText: errors.endDate?.message,
+                      },
+                    }}
+                  />
+                )}
+              />
+            </Stack>
+
+            <Button type="submit" variant="contained" size="large" fullWidth>
+              Enviar
+            </Button>
+          </Stack>
+        </Box>
+      </Box>
 
       <Modal open={openConfirmModal} onClose={handleCloseModal}>
         <Box sx={modalStyle}>
@@ -153,7 +228,12 @@ export default function ReportsRecalculate() {
               </Typography>
             </Stack>
           )}
-          <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 3 }}>
+          <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="flex-end"
+            sx={{ mt: 3 }}
+          >
             <Button onClick={handleCloseModal}>Cancelar</Button>
             <Button
               variant="contained"
@@ -170,6 +250,6 @@ export default function ReportsRecalculate() {
           )}
         </Box>
       </Modal>
-    </Box>
+    </>
   );
 }

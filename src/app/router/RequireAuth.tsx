@@ -1,16 +1,26 @@
 import { Navigate, Outlet, useLocation } from "react-router";
 import { useAccount } from "../../lib/hooks/useAccount";
-import { Typography } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 export default function RequireAuth() {
-    const { currentUser, loadinUserInfo } = useAccount();
-    const location = useLocation();
+  const { currentUser, loadinUserInfo } = useAccount();
+  const location = useLocation();
 
-    if (loadinUserInfo) return <Typography>Loading...</Typography>
-
-    if (!currentUser) return <Navigate to="/signin" state={{from: location}} />
-
+  if (loadinUserInfo)
     return (
-        <Outlet />
-    )
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
+  if (!currentUser) return <Navigate to="/signin" state={{ from: location }} />;
+
+  return <Outlet />;
 }

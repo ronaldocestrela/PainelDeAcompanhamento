@@ -7,58 +7,99 @@ import Copyright from "../internals/components/Copyright";
 import CustomizedDataGrid from "./CustomizedDataGrid";
 import StatCard, { type StatCardProps } from "./StatCard";
 import DatePeriod from "./DatePeriod";
+import HouseFilter from "./HouseFilter";
 import { type GridRowsProp } from "@mui/x-data-grid";
 import { useDashboard } from "./DashboardContext";
-// Import removed: rows from GridData was unused after modifying the rendering logic
-import HighlightedCard from "./HighlightedCard";
-import SessionsChart from "./SessionsChart";
-import PageViewsBarChart from "./PageViewsBarChart";
-import CustomizedTreeView from "./CustomizedTreeView";
-import ChartUserByCountry from "./ChartUserByCountry";
 import agente from "../../../lib/api/agents";
 
 export default function MainGrid() {
-  const { startDate, endDate } = useDashboard();
-  const [totalRevenue, setTotalRevenue] = useState({ total: 0, dailyTotals: [] as number[] });
-  const [totalCpa, setTotalCpa] = useState({ total: 0, dailyTotals: [] as number[] });
-  const [totalCommission, setTotalCommission] = useState({ total: 0, dailyTotals: [] as number[] });
+  const { startDate, endDate, selectedBookmakerId } = useDashboard();
+  const [totalRevenue, setTotalRevenue] = useState({
+    total: 0,
+    dailyTotals: [] as number[],
+  });
+  const [totalCpa, setTotalCpa] = useState({
+    total: 0,
+    dailyTotals: [] as number[],
+  });
+  const [totalCommission, setTotalCommission] = useState({
+    total: 0,
+    dailyTotals: [] as number[],
+  });
   const [expertReports, setExpertReports] = useState<any[]>([]);
 
   useEffect(() => {
     if (startDate && endDate) {
-      const fromDate = startDate.toISOString().split('T')[0];
-      const toDate = endDate.toISOString().split('T')[0];
-      
-      console.log('📅 Buscando dados do período:', fromDate, 'até', toDate);
-      
-      agente.get('Reports/total-rev', { params: { FromDate: fromDate, ToDate: toDate } })
+      const fromDate = startDate.toISOString().split("T")[0];
+      const toDate = endDate.toISOString().split("T")[0];
+
+      console.log("📅 Buscando dados do período:", fromDate, "até", toDate);
+
+      const bookmakerId = selectedBookmakerId;
+
+      agente
+        .get("Reports/total-rev", {
+          params: {
+            FromDate: fromDate,
+            ToDate: toDate,
+            BookmakerId: bookmakerId,
+          },
+        })
         .then((response: any) => setTotalRevenue(response.data))
-        .catch((error: any) => console.error('Error fetching total revenue:', error));
-      
-      agente.get('Reports/total-cpa', { params: { FromDate: fromDate, ToDate: toDate } })
+        .catch((error: any) =>
+          console.error("Error fetching total revenue:", error),
+        );
+
+      agente
+        .get("Reports/total-cpa", {
+          params: {
+            FromDate: fromDate,
+            ToDate: toDate,
+            BookmakerId: bookmakerId,
+          },
+        })
         .then((response: any) => setTotalCpa(response.data))
-        .catch((error: any) => console.error('Error fetching total CPA:', error));
-      
-      agente.get('Reports/total-commision', { params: { FromDate: fromDate, ToDate: toDate } })
+        .catch((error: any) =>
+          console.error("Error fetching total CPA:", error),
+        );
+
+      agente
+        .get("Reports/total-commision", {
+          params: {
+            FromDate: fromDate,
+            ToDate: toDate,
+            BookmakerId: bookmakerId,
+          },
+        })
         .then((response: any) => setTotalCommission(response.data))
-        .catch((error: any) => console.error('Error fetching total commission:', error));
-      
-      agente.get('reports/by-expert', { params: { InitialDate: fromDate, FinalDate: toDate } })
+        .catch((error: any) =>
+          console.error("Error fetching total commission:", error),
+        );
+
+      agente
+        .get("reports/by-expert", {
+          params: {
+            InitialDate: fromDate,
+            FinalDate: toDate,
+            BookmakerId: bookmakerId,
+          },
+        })
         .then((response: any) => {
-          console.log('✅ Resposta da API reports/by-expert:', response.data);
+          console.log("✅ Resposta da API reports/by-expert:", response.data);
           setExpertReports(response.data);
         })
-        .catch((error: any) => console.error('Error fetching expert reports:', error));
+        .catch((error: any) =>
+          console.error("Error fetching expert reports:", error),
+        );
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, selectedBookmakerId]);
 
   const { cardData, gridRows } = useMemo<{
     cardData: StatCardProps[];
     gridRows: GridRowsProp;
   }>(() => {
+    console.log("🔍 MainGrid - expertReports:", expertReports);
 
-    console.log('🔍 MainGrid - expertReports:', expertReports);
-    
     // Render empty state only when there are no expert reports (no data)
     // const hasReports = expertReports && expertReports.length > 0;
 
@@ -81,39 +122,60 @@ export default function MainGrid() {
     // }
     const dynamicCardData: StatCardProps[] = [
       {
-        title: "Comissão", value: totalCommission.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalCommission.total >= 0 ? "up" : "down",
+        title: "Comissão",
+        value: totalCommission.total.toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+        interval: "Período selecionado",
+        trend: totalCommission.total >= 0 ? "up" : "down",
         data: totalCommission.dailyTotals,
       },
       {
-        title: "CPA", value: totalCpa.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalCpa.total >= 0 ? "up" : "down",
+        title: "CPA",
+        value: totalCpa.total.toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+        interval: "Período selecionado",
+        trend: totalCpa.total >= 0 ? "up" : "down",
         data: totalCpa.dailyTotals,
       },
       {
-        title: "Reavenue", value: totalRevenue.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), interval: "Período selecionado", trend: totalRevenue.total >= 0 ? "up" : "down",
+        title: "Reavenue",
+        value: totalRevenue.total.toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+        interval: "Período selecionado",
+        trend: totalRevenue.total >= 0 ? "up" : "down",
         data: totalRevenue.dailyTotals,
       },
     ];
 
-    const flattenedReports = expertReports.flatMap((expert: any, eIndex: number) =>
-      expert.reports.map((report: any, rIndex: number) => ({
-        id: report.id ?? `${expert.expertName}-${eIndex}-${rIndex}-${report.reportDate ?? ''}`,
-        ...report,
-        expertName: expert.expertName,
-        expertId: expert.id,
-      }))
+    const flattenedReports = expertReports.flatMap(
+      (expert: any, eIndex: number) =>
+        expert.reports.map((report: any, rIndex: number) => ({
+          id:
+            report.id ??
+            `${expert.expertName}-${eIndex}-${rIndex}-${report.reportDate ?? ""}`,
+          ...report,
+          expertName: expert.expertName,
+          expertId: expert.id,
+        })),
     );
 
-    console.log('📊 MainGrid - flattenedReports:', flattenedReports);
+    console.log("📊 MainGrid - flattenedReports:", flattenedReports);
 
     const rowsToDisplay = flattenedReports;
 
-    console.log('✅ MainGrid - rowsToDisplay:', rowsToDisplay);
+    console.log("✅ MainGrid - rowsToDisplay:", rowsToDisplay);
 
     return { cardData: dynamicCardData, gridRows: rowsToDisplay };
   }, [totalCpa, totalRevenue, totalCommission, expertReports]);
 
   return (
-    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+    <Box sx={{ width: "100%" }}>
       <Stack
         direction="row"
         alignItems="center"
@@ -130,7 +192,8 @@ export default function MainGrid() {
             </Typography>
           )} */}
         </Stack>
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <HouseFilter />
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <DatePeriod iconOnly />
           </Box>
@@ -141,7 +204,7 @@ export default function MainGrid() {
       </Stack>
       <Grid container spacing={2} columns={12}>
         {cardData.map((card: StatCardProps, index: number) => (
-          <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
+          <Grid key={index} size={{ xs: 12, sm: 6, lg: 4 }}>
             <StatCard {...card} />
           </Grid>
         ))}
@@ -160,7 +223,7 @@ export default function MainGrid() {
       </Typography>
       {/* <Grid container spacing={2} columns={12}> */}
       <Grid container spacing={2} columns={12}>
-        <Grid size={{ xs: 12, lg: 9 }}>
+        <Grid size={{ xs: 12, lg: 12 }}>
           <CustomizedDataGrid rows={gridRows} />
         </Grid>
         {/* <Grid size={{ xs: 12, lg: 3 }}>

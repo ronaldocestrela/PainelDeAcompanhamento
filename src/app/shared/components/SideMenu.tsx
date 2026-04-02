@@ -2,6 +2,7 @@ import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import MenuContent from "./MenuContent";
 import OptionsMenu from "./OptionsMenu";
 import UserMenu from "../../layout/UserMenu";
@@ -34,23 +35,34 @@ export default function SideMenu() {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: sidebarOpen ? "flex-start" : "center",
           height: 64,
           px: 1.5,
+          gap: 1,
           mt: "calc(var(--template-frame-height, 0px) + 4px)",
           overflow: "hidden",
         }}
       >
         <img
-          src="/public/logoBetBoard.png"
+          src="/EMPIRE GROUP LOGO MENOR.png"
           alt="Logo"
           style={{
-            height: sidebarOpen ? "auto" : 36,
-            width: sidebarOpen ? "100%" : 36,
+            height: 36,
+            width: 36,
             objectFit: "contain",
-            transition: "all 0.25s ease-in-out",
+            flexShrink: 0,
           }}
         />
+        {sidebarOpen && (
+          <Typography
+            variant="subtitle1"
+            fontWeight={700}
+            noWrap
+            sx={{ transition: "opacity 0.25s ease-in-out" }}
+          >
+            Empire Group
+          </Typography>
+        )}
       </Box>
       <Divider />
       <Box

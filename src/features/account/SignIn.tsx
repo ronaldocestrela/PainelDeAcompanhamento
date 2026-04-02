@@ -169,7 +169,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         <Card variant="outlined">
           <ImageListItem>
             <img
-              src="/public/logoBetBoard.png"
+              src="/EMPIRE GROUP LOGO NORMAL.png"
               alt="Logo"
               style={{ width: "100%", height: "auto" }}
             />

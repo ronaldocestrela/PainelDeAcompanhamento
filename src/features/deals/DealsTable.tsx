@@ -1,8 +1,5 @@
-import {
-  DataGrid,
-  type GridColDef,
-} from "@mui/x-data-grid";
-import {format} from 'date-fns'
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { format } from "date-fns";
 import type { Deal } from "../../lib/types";
 
 const getColumns = (onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
@@ -12,8 +9,8 @@ const getColumns = (onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
     flex: 1,
     minWidth: 110,
     valueFormatter: (date) => {
-      return format(new Date(date), 'dd/MM/yyyy')
-    }
+      return format(new Date(date), "dd/MM/yyyy");
+    },
   },
   {
     field: "bookmakerName",

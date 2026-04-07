@@ -32,31 +32,31 @@ const getColumns = (onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
     headerName: "CPA Expert (R$)",
     width: 150,
   },
-  {
-    field: "cpaValueAgency",
-    headerName: "CPA Agência (R$)",
-    width: 150,
-  },
+  // {
+  //   field: "cpaValueAgency",
+  //   headerName: "CPA Agência (R$)",
+  //   width: 150,
+  // },
   {
     field: "revValueExpert",
     headerName: "Rev Expert (%)",
     width: 130,
   },
-  {
-    field: "revValueAgency",
-    headerName: "Rev Agência (%)",
-    width: 130,
-  },
-  {
-    field: "depositBonusExpert",
-    headerName: "Bônus Depósito Expert (R$)",
-    width: 210,
-  },
-  {
-    field: "depositBonusAgency",
-    headerName: "Bônus Depósito Agência (R$)",
-    width: 210,
-  },
+  // {
+  //   field: "revValueAgency",
+  //   headerName: "Rev Agência (%)",
+  //   width: 130,
+  // },
+  // {
+  //   field: "depositBonusExpert",
+  //   headerName: "Bônus Depósito Expert (R$)",
+  //   width: 210,
+  // },
+  // {
+  //   field: "depositBonusAgency",
+  //   headerName: "Bônus Depósito Agência (R$)",
+  //   width: 210,
+  // },
 ];
 
 interface DealsTableProps {

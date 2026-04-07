@@ -338,8 +338,6 @@ export type Deal = {
   nplValueAgency: number;
   cpaValueExpert: number;
   cpaValueAgency: number;
-  nplValueExpert: number;
-  nplValueAgency: number;
   depositBonusExpert: number;
   depositBonusAgency: number;
   bookmakerId: string;

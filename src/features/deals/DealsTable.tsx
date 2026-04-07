@@ -1,19 +1,16 @@
-import {
-  DataGrid,
-  type GridColDef,
-} from "@mui/x-data-grid";
-import {format} from 'date-fns'
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { format } from "date-fns";
 import type { Deal } from "../../lib/types";
 
-const getColumns = (onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
+const getColumns = (_onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
   {
     field: "initialDate",
     headerName: "Data",
     flex: 1,
     minWidth: 110,
     valueFormatter: (date) => {
-      return format(new Date(date), 'dd/MM/yyyy')
-    }
+      return format(new Date(date), "dd/MM/yyyy");
+    },
   },
   {
     field: "bookmakerName",
@@ -32,31 +29,31 @@ const getColumns = (onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
     headerName: "CPA Expert (R$)",
     width: 150,
   },
-  {
-    field: "cpaValueAgency",
-    headerName: "CPA Agência (R$)",
-    width: 150,
-  },
+  // {
+  //   field: "cpaValueAgency",
+  //   headerName: "CPA Agência (R$)",
+  //   width: 150,
+  // },
   {
     field: "revValueExpert",
     headerName: "Rev Expert (%)",
     width: 130,
   },
-  {
-    field: "revValueAgency",
-    headerName: "Rev Agência (%)",
-    width: 130,
-  },
-  {
-    field: "depositBonusExpert",
-    headerName: "Bônus Depósito Expert (R$)",
-    width: 210,
-  },
-  {
-    field: "depositBonusAgency",
-    headerName: "Bônus Depósito Agência (R$)",
-    width: 210,
-  },
+  // {
+  //   field: "revValueAgency",
+  //   headerName: "Rev Agência (%)",
+  //   width: 130,
+  // },
+  // {
+  //   field: "depositBonusExpert",
+  //   headerName: "Bônus Depósito Expert (R$)",
+  //   width: 210,
+  // },
+  // {
+  //   field: "depositBonusAgency",
+  //   headerName: "Bônus Depósito Agência (R$)",
+  //   width: 210,
+  // },
 ];
 
 interface DealsTableProps {

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import MuiToolbar from "@mui/material/Toolbar";
 import { tabsClasses } from "@mui/material/Tabs";
@@ -59,13 +58,18 @@ export default function AppNavbar() {
           }}
         >
           <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-            <CustomIcon />
+            <img
+              src="/EMPIRE GROUP LOGO MENOR.png"
+              alt="Logo"
+              style={{ height: 36, width: 36, objectFit: "contain" }}
+            />
             <Typography
-              variant="h4"
+              variant="h6"
               component="h1"
+              fontWeight={700}
               sx={{ color: "text.primary" }}
             >
-              BetBoard
+              Empire Group
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
@@ -78,28 +82,5 @@ export default function AppNavbar() {
         </Stack>
       </Toolbar>
     </AppBar>
-  );
-}
-
-export function CustomIcon() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-      }}
-    >
-      <img
-        src="/icon.svg"
-        alt="Logo"
-        style={{
-          width: "1rem",
-          height: "1rem",
-          display: "block",
-        }}
-      />
-    </Box>
   );
 }

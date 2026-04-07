@@ -100,12 +100,12 @@ export default function StatCard({
               <Typography variant="h3" component="p">
                 {value}
               </Typography>
-              <Chip
+              {/* <Chip
                 size="medium"
                 color={color}
                 label={trendValues[trend]}
                 sx={{ fontWeight: 600, fontSize: "0.85rem" }}
-              />
+              /> */}
             </Stack>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {interval}

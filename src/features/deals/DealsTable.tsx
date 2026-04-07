@@ -2,7 +2,7 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import type { Deal } from "../../lib/types";
 
-const getColumns = (onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
+const getColumns = (_onEdit: (deal: Deal) => void): GridColDef<Deal>[] => [
   {
     field: "initialDate",
     headerName: "Data",
